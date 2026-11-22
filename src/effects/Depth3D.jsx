@@ -112,8 +112,9 @@ export default function Depth3D({
       }
       const gl = renderer.gl;
       Object.assign(gl.canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', display: 'block' });
+      // 畫布放在靜態圖「下面」，等第一張畫面畫好，靜態圖再淡出，避免黑畫面閃一下
       wrap.prepend(gl.canvas);
-      if (fallbackRef.current) fallbackRef.current.style.visibility = 'hidden';
+      let firstFrame = true;
 
       const texOpts = { generateMipmaps: false, minFilter: gl.LINEAR, magFilter: gl.LINEAR, wrapS: gl.CLAMP_TO_EDGE, wrapT: gl.CLAMP_TO_EDGE };
       const tImage = new Texture(gl, { image: img, ...texOpts });
@@ -186,6 +187,14 @@ export default function Depth3D({
         cur.y += (target.y - cur.y) * 0.06;
         program.uniforms.uMouse.value = [cur.x, cur.y];
         renderer.render({ scene: mesh });
+        if (firstFrame) {
+          firstFrame = false;
+          const fb = fallbackRef.current;
+          if (fb) {
+            fb.style.transition = 'opacity .4s ease';
+            fb.style.opacity = '0';
+          }
+        }
       };
       raf = requestAnimationFrame(loop);
 
