@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DUDA Effects 測試頁</title>
+  <style>
+    body { margin: 0; font-family: system-ui, "Noto Sans TC", sans-serif; background: #f6f5f2; color: #222; }
+    section { padding: 64px 24px; max-width: 960px; margin: 0 auto; }
+    h2.label { font-size: 14px; letter-spacing: .1em; color: #888; margin: 0 0 16px; font-weight: 500; }
+    code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+  </style>
+  <script src="./dist/effects.js" defer></script>
+</head>
+<body>
+  <!-- 點擊火花：整頁生效 -->
+  <div data-rb="ClickSpark" data-color="#ff6a3d" data-spark-count="10"></div>
+
+  <!-- 極光背景＋上層文字 -->
+  <div data-rb="Aurora" data-height="460px" data-colors="#3A29FF,#FF94B4,#FF3232">
+    <h1 style="color:#fff;font-size:48px;margin:0 0 12px">極光背景 Aurora</h1>
+    <p style="color:#ffffffcc;font-size:18px;margin:0">標籤裡的內容會疊在極光上面</p>
+  </div>
+
+  <section>
+    <h2 class="label">SPLIT TEXT · 逐字</h2>
+    <div data-rb="SplitText" data-tag="h2" data-font-size="40px" data-delay="60">承百年香火，記一世平安。</div>
+  </section>
+
+  <section>
+    <h2 class="label">SPLIT TEXT · 逐詞</h2>
+    <div data-rb="SplitText" data-split-type="words" data-font-size="32px" data-delay="120">Build beautiful websites with motion</div>
+  </section>
+
+  <section style="height:60vh">
+    <p>在頁面任何地方點一下，會出現火花效果。版本：<code id="ver">載入中…</code></p>
+  </section>
+
+  <script>
+    window.addEventListener('load', function () {
+      document.getElementById('ver').textContent = window.DudaEffects ? window.DudaEffects.version : '未載入';
+    });
+  </script>
+</body>
+</html>
