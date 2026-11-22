@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
+import { screenWatcher } from './shared.js';
 
 /**
  * Aurora：WebGL 極光流動背景。標籤裡原本的內容會疊在極光上面。
@@ -139,15 +140,15 @@ export default function Aurora({
     resize();
 
     // 不在畫面上時暫停，節省效能
-    let onScreen = true;
-    const io = new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; });
-    io.observe(wrap);
+    const watch = screenWatcher(wrap);
+    let drawn = false;
 
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = 0;
     const loop = (t) => {
       raf = requestAnimationFrame(loop);
-      if (!onScreen) return;
+      if (!watch.visible() && drawn) return;
+      drawn = true;
       program.uniforms.uTime.value = (reduce ? 0 : t * 0.001) * speed;
       renderer.render({ scene: mesh });
     };
@@ -156,7 +157,7 @@ export default function Aurora({
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      io.disconnect();
+      watch.dispose();
       gl.canvas.remove();
       const ext = gl.getExtension('WEBGL_lose_context');
       if (ext) ext.loseContext();

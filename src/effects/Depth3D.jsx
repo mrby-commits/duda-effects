@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl';
-import { prefersReducedMotion } from './shared.js';
+import { prefersReducedMotion, screenWatcher } from './shared.js';
 
 /**
  * Depth3D：用「圖片 + 深度圖」做出 2.5D 立體視差（類似 Facebook 3D 相片）。
@@ -169,15 +169,13 @@ export default function Depth3D({
       if (follow === 'self') wrap.addEventListener('mouseleave', onLeave);
       window.addEventListener('deviceorientation', onTilt);
 
-      let onScreen = true;
-      const io = new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; });
-      io.observe(wrap);
+      const watch = screenWatcher(wrap);
 
       const still = prefersReducedMotion();
       let raf = 0;
       const loop = (t) => {
         raf = requestAnimationFrame(loop);
-        if (!onScreen) return;
+        if (!watch.visible() && !firstFrame) return;
         if (auto && !still && t - lastInput > 2500) {
           target.x = Math.sin(t * 0.00045) * 0.8;
           target.y = Math.sin(t * 0.0003) * 0.35;
@@ -201,7 +199,7 @@ export default function Depth3D({
       cleanup = () => {
         cancelAnimationFrame(raf);
         ro.disconnect();
-        io.disconnect();
+        watch.dispose();
         moveTarget.removeEventListener('mousemove', onMove);
         wrap.removeEventListener('mouseleave', onLeave);
         window.removeEventListener('deviceorientation', onTilt);

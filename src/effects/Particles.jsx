@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Camera, Geometry, Program, Mesh } from 'ogl';
-import { toList, hexToRgb, prefersReducedMotion } from './shared.js';
+import { toList, hexToRgb, prefersReducedMotion, screenWatcher } from './shared.js';
 
 /**
  * Particles：WebGL 3D 漂浮粒子背景，會隨滑鼠輕微移動。標籤裡的內容會疊在上面。
@@ -150,9 +150,8 @@ export default function Particles({
     };
     if (hover) wrap.addEventListener('mousemove', onMove);
 
-    let onScreen = true;
-    const io = new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; });
-    io.observe(wrap);
+    const watch = screenWatcher(wrap);
+    let drawn = false;
 
     const still = prefersReducedMotion();
     let raf = 0;
@@ -160,7 +159,8 @@ export default function Particles({
     let elapsed = 0;
     const loop = (t) => {
       raf = requestAnimationFrame(loop);
-      if (!onScreen) { last = t; return; }
+      if (!watch.visible() && drawn) { last = t; return; }
+      drawn = true;
       const dt = t - last;
       last = t;
       if (!still) elapsed += dt * speed;
@@ -181,7 +181,7 @@ export default function Particles({
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      io.disconnect();
+      watch.dispose();
       wrap.removeEventListener('mousemove', onMove);
       gl.canvas.remove();
       const ext = gl.getExtension('WEBGL_lose_context');
