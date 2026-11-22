@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Depth3D 測試｜平安宮</title>
+  <style>
+    body { margin: 0; font-family: system-ui, "Noto Sans TC", serif; background: #efe4c9; color: #2a1d14; }
+    section { padding: 48px 24px; max-width: 960px; margin: 0 auto; }
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .compare img { width: 100%; display: block; border: 3px solid #1c1410; }
+    .compare p { margin: 6px 0 0; font-size: 14px; color: #6b5440; }
+  </style>
+  <script src="./dist/effects.js" defer></script>
+</head>
+<body>
+  <div data-rb="Depth3D"
+       data-image="./assets/pinan/pinan-ink.jpg"
+       data-depth="./assets/pinan/pinan-depth.jpg"
+       data-alt="臺南平安宮外觀，粗黑線稿古廟風格插畫"
+       data-height="88vh" data-align="left" data-valign="bottom">
+    <div style="font-family:serif;color:#1c1410;background:rgba(239,228,201,.88);border:3px solid #1c1410;padding:14px 28px">
+      <div style="font-size:42px;font-weight:900;letter-spacing:.3em">平安宮</div>
+      <div style="font-size:15px;letter-spacing:.4em">承百年香火・記一世平安</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>素材對照</h2>
+    <div class="compare">
+      <div><img src="./assets/pinan/pinan-ink.jpg" alt=""><p>風格化圖（粗黑線稿＋古廟配色）</p></div>
+      <div><img src="./assets/pinan/pinan-depth.jpg" alt=""><p>AI 深度圖（白＝近、黑＝遠）</p></div>
+    </div>
+  </section>
+</body>
+</html>

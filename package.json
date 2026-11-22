@@ -1,6 +1,6 @@
 {
   "name": "duda-effects",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "React Bits 風格的動態效果庫，打包成單一 JS 檔，透過 HTML 標籤掛載到 DUDA 網站。",
   "type": "module",

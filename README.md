@@ -113,6 +113,32 @@ React Bits 風格的動態效果庫，打包成**單一 JS 檔**，用 HTML 標�
 
 參數：`max-tilt`(10)、`scale`(1.03)、`perspective`(900)、`glare`(true)、`speed`(400)、`radius`(16px)、`target`。觸控裝置自動停用。
 
+### Depth3D：2.5D 立體視差（v0.3，WebGL）
+
+一張圖片＋一張深度圖，滑鼠移動時產生立體景深；手機自動緩慢擺動（Android 可傾斜手機控制）。
+
+```html
+<div data-rb="Depth3D"
+     data-image="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.3.0/assets/pinan/pinan-ink.jpg"
+     data-depth="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.3.0/assets/pinan/pinan-depth.jpg"
+     data-alt="臺南平安宮外觀" data-height="80vh" data-align="left" data-valign="bottom">
+  <h1>標題直接寫在裡面</h1>
+</div>
+```
+
+參數：`image`、`depth`（灰階：白＝近、黑＝遠）、`alt`、`ratio`(3/2)、`height`、`strength`(0.035)、`focus`(0.5)、`zoom`(1.08)、`auto`(true)、`follow`（window/self）、`align`、`valign`、`padding`。
+
+#### 製作素材（`tools/`）
+
+```bash
+python -m venv --system-site-packages .venv
+.venv/Scripts/pip install opencv-python-headless transformers   # 另需 torch
+# 1) 風格化：粗黑線稿＋古廟配色
+.venv/Scripts/python -I tools/stylize.py 原圖.jpg 風格圖.jpg --sat 1.0 --paper 0.05 --floor 0.08 --contrast 1.18 --ms 14,32 --canny 25,75 --line 6 --min-edge 150
+# 2) 深度圖：Depth Anything V2 Small（Apache-2.0）
+.venv/Scripts/python -I tools/depth.py 原圖.jpg 深度圖.png
+```
+
 ## 開發
 
 ```bash
