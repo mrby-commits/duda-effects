@@ -3,11 +3,16 @@ import { createRoot } from 'react-dom/client';
 import SplitText from './effects/SplitText.jsx';
 import Aurora from './effects/Aurora.jsx';
 import ClickSpark from './effects/ClickSpark.jsx';
+import FadeIn from './effects/FadeIn.jsx';
+import CountUp from './effects/CountUp.jsx';
+import Marquee from './effects/Marquee.jsx';
+import Particles from './effects/Particles.jsx';
+import TiltCard from './effects/TiltCard.jsx';
 
-const VERSION = '0.1.0';
+const VERSION = '0.2.0';
 
 // 效果註冊表：HTML 上的 data-rb="名稱" 對應到這裡的元件
-const registry = { SplitText, Aurora, ClickSpark };
+const registry = { SplitText, Aurora, ClickSpark, FadeIn, CountUp, Marquee, Particles, TiltCard };
 
 // data-* 的值都是字串，轉成數字／布林／JSON
 function parseValue(v) {

@@ -6,39 +6,73 @@
   <title>DUDA Effects 測試頁</title>
   <style>
     body { margin: 0; font-family: system-ui, "Noto Sans TC", sans-serif; background: #f6f5f2; color: #222; }
-    section { padding: 64px 24px; max-width: 960px; margin: 0 auto; }
-    h2.label { font-size: 14px; letter-spacing: .1em; color: #888; margin: 0 0 16px; font-weight: 500; }
+    section { padding: 64px 24px; max-width: 1080px; margin: 0 auto; }
+    h2.label { font-size: 14px; letter-spacing: .1em; color: #888; margin: 0 0 20px; font-weight: 500; }
     code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: center; }
+    .stats p { margin: 4px 0 0; color: #666; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .card { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+    .card h3 { margin: 0 0 8px; }
+    .card p { margin: 0; color: #666; }
+    @media (max-width: 700px) { .stats, .cards { grid-template-columns: 1fr; } }
   </style>
   <script src="./dist/effects.js" defer></script>
 </head>
 <body>
-  <!-- 點擊火花：整頁生效 -->
   <div data-rb="ClickSpark" data-color="#ff6a3d" data-spark-count="10"></div>
 
-  <!-- 極光背景＋上層文字 -->
-  <div data-rb="Aurora" data-height="460px" data-colors="#3A29FF,#FF94B4,#FF3232">
-    <h1 style="color:#fff;font-size:48px;margin:0 0 12px">極光背景 Aurora</h1>
-    <p style="color:#ffffffcc;font-size:18px;margin:0">標籤裡的內容會疊在極光上面</p>
+  <!-- Particles 粒子背景 -->
+  <div data-rb="Particles" data-height="460px" data-colors="#ffffff,#e0a458,#ff94b4" data-count="250">
+    <h1 style="color:#fff;font-size:48px;margin:0 0 12px">粒子背景 Particles</h1>
+    <p style="color:#ffffffcc;font-size:18px;margin:0">滑鼠移動，粒子會跟著飄</p>
+  </div>
+
+  <!-- Marquee 跑馬燈 -->
+  <div style="background:#1d1d1f;color:#fff;padding:18px 0">
+    <div data-rb="Marquee" data-items="安太歲|點光明燈|祈福法會|平安符|文昌祈福|財神開運" data-separator="✦" data-font-size="24px" data-speed="70"></div>
   </div>
 
   <section>
-    <h2 class="label">SPLIT TEXT · 逐字</h2>
-    <div data-rb="SplitText" data-tag="h2" data-font-size="40px" data-delay="60">承百年香火，記一世平安。</div>
+    <h2 class="label">COUNT UP · 數字跑動</h2>
+    <div class="stats">
+      <div><div data-rb="CountUp" data-to="300" data-suffix="+" data-font-size="56px" data-font-weight="700"></div><p>年歷史</p></div>
+      <div><div data-rb="CountUp" data-to="128000" data-font-size="56px" data-font-weight="700"></div><p>年度香客</p></div>
+      <div><div data-rb="CountUp" data-to="99.8" data-suffix="%" data-font-size="56px" data-font-weight="700"></div><p>滿意度</p></div>
+    </div>
   </section>
 
   <section>
-    <h2 class="label">SPLIT TEXT · 逐詞</h2>
-    <div data-rb="SplitText" data-split-type="words" data-font-size="32px" data-delay="120">Build beautiful websites with motion</div>
+    <h2 class="label">TILT CARD · 卡片傾斜 ＋ FADE IN 依序淡入</h2>
+    <div data-rb="FadeIn" data-stagger="150">
+      <div class="cards">
+        <div class="card tilt"><h3>安太歲</h3><p>新春安奉太歲星君，祈求整年平安順遂。</p></div>
+        <div class="card tilt"><h3>點光明燈</h3><p>點燈祈福，照亮前程，元辰光彩。</p></div>
+        <div class="card tilt"><h3>祈福法會</h3><p>每月定期舉辦，為信眾消災解厄。</p></div>
+      </div>
+    </div>
+    <div data-rb="TiltCard" data-target=".tilt" data-max-tilt="12"></div>
   </section>
 
-  <section style="height:60vh">
-    <p>在頁面任何地方點一下，會出現火花效果。版本：<code id="ver">載入中…</code></p>
+  <section>
+    <h2 class="label">FADE IN · 不同方向</h2>
+    <div data-rb="FadeIn" data-direction="left" data-distance="80"><h3 style="font-size:28px;margin:0 0 24px">從右邊滑入</h3></div>
+    <div data-rb="FadeIn" data-direction="up" data-blur="8" data-delay="200"><h3 style="font-size:28px;margin:0">模糊淡入</h3></div>
   </section>
+
+  <!-- Aurora + SplitText（v0.1） -->
+  <div data-rb="Aurora" data-height="360px" data-colors="#3A29FF,#FF94B4,#FF3232">
+    <h2 style="color:#fff;font-size:40px;margin:0">極光背景 Aurora</h2>
+  </div>
+  <section>
+    <div data-rb="SplitText" data-tag="h2" data-font-size="40px" data-delay="60">承百年香火，記一世平安。</div>
+    <p style="margin-top:48px">版本：<code id="ver">載入中…</code></p>
+  </section>
+  <div style="height:30vh"></div>
 
   <script>
     window.addEventListener('load', function () {
-      document.getElementById('ver').textContent = window.DudaEffects ? window.DudaEffects.version : '未載入';
+      document.getElementById('ver').textContent = window.DudaEffects ? window.DudaEffects.version + '（' + window.DudaEffects.effects.join(', ') + '）' : '未載入';
     });
   </script>
 </body>

@@ -56,6 +56,63 @@ React Bits 風格的動態效果庫，打包成**單一 JS 檔**，用 HTML 標�
 
 參數：`data-color`、`data-spark-count`、`data-spark-size`、`data-spark-radius`、`data-duration`、`data-line-width`。
 
+### FadeIn：捲動淡入（v0.2）
+
+```html
+<!-- 包住自己的內容；data-stagger 讓子項目依序出現 -->
+<div data-rb="FadeIn" data-direction="up" data-stagger="150">
+  <div class="cards"> <div>卡片1</div> <div>卡片2</div> <div>卡片3</div> </div>
+</div>
+
+<!-- 套用到 DUDA 原生元件：在元件的 CSS class 加上 fade，頁面任一處放這行 -->
+<div data-rb="FadeIn" data-target=".fade" data-stagger="120"></div>
+```
+
+參數：`direction`（up/down/left/right/none）、`distance`(40)、`duration`(800)、`delay`(0)、`stagger`(0)、`scale`(1)、`blur`(0)、`threshold`(0.15)、`once`(true)、`target`（CSS 選擇器）。
+
+### CountUp：數字跑動（v0.2）
+
+```html
+<div data-rb="CountUp" data-to="128000" data-suffix="+" data-font-size="56px" data-font-weight="700"></div>
+```
+
+參數：`to`、`from`(0)、`duration`(2000)、`decimals`（自動）、`separator`(`,`，不要給 `none`)、`prefix`、`suffix`、`tag`、`font-size`、`color`、`font-weight`。
+
+### Marquee：跑馬燈（v0.2）
+
+```html
+<div data-rb="Marquee" data-items="安太歲|點光明燈|祈福法會" data-separator="✦" data-font-size="24px"></div>
+
+<!-- logo 牆：每個直接子元素是一個項目 -->
+<div data-rb="Marquee" data-speed="40" data-gap="64px">
+  <img src="logo1.png" height="40"><img src="logo2.png" height="40">
+</div>
+```
+
+參數：`items`（`|` 分隔）、`speed`（px/秒，60）、`direction`（left/right）、`gap`(48px)、`separator`、`pause-on-hover`(true)、`fade`(true)、`font-size`、`color`、`font-weight`。
+
+### Particles：3D 粒子背景（v0.2，WebGL）
+
+```html
+<div data-rb="Particles" data-height="460px" data-colors="#ffffff,#e0a458">
+  <h1 style="color:#fff">標題直接寫在裡面</h1>
+</div>
+```
+
+參數：`count`（200，手機自動減半）、`colors`、`height`(400px)、`background`（#060010，可給 transparent）、`speed`(0.1)、`size`(100)、`spread`(10)、`hover`(true)、`rotate`(true)、`align`、`padding`。
+
+### TiltCard：卡片 3D 傾斜（v0.2）
+
+```html
+<!-- 包住自己的內容 -->
+<div data-rb="TiltCard" data-max-tilt="12"><img src="..." style="width:100%"></div>
+
+<!-- 套用到 DUDA 原生元件：在元件的 CSS class 加上 tilt -->
+<div data-rb="TiltCard" data-target=".tilt"></div>
+```
+
+參數：`max-tilt`(10)、`scale`(1.03)、`perspective`(900)、`glare`(true)、`speed`(400)、`radius`(16px)、`target`。觸控裝置自動停用。
+
 ## 開發
 
 ```bash
