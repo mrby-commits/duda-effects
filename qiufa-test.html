@@ -13,7 +13,7 @@
     width:100%; overflow-x:clip; }
   /* 讓 DUDA 的區段／欄位撐滿全寬（只影響放這個元件的區段） */
   section.flex-element:has(.qf) { padding:0 !important; min-height:0 !important; }
-  section.flex-element:has(.qf) > .flex-element.grid { display:block !important; padding:0 !important; margin:0 !important; width:100% !important; max-width:none !important; min-height:0 !important; }
+  section.flex-element:has(.qf) .flex-element.grid:has(.qf) { display:block !important; padding:0 !important; margin:0 !important; width:100% !important; max-width:none !important; min-height:0 !important; }
   section.flex-element:has(.qf) .flex-element.group { width:100% !important; max-width:none !important; padding:0 !important; margin:0 !important; min-height:0 !important; }
   section.flex-element:has(.qf) .flex-element.group.empty { display:none !important; }
   /* 正式網站上空欄位沒有 .empty class：隱藏所有不含本頁內容的欄位，並讓內容欄撐滿 */
@@ -26,9 +26,9 @@
   .qf img { max-width:100%; display:block; }
   .qf .leaflet-container img { max-width:none !important; }
   .qf h2, .qf h3, .qf p { margin:0; }
-  /* 效果庫掛載時會多包一層 div：在格線容器裡讓它「透明」 */
-  .qf-acts > div, .qf-sites > div, .qf-mtns > div { display:contents; }
-  .qf-tl__media > div { height:100%; }
+  /* 效果庫掛載時會多包一層 div：在格線容器裡讓它「透明」（注意：DUDA 發佈時會把 style 裡的大於符號轉義，CSS 不可用子代選擇器） */
+  .qf-acts div:not([class]), .qf-sites div:not([class]):not([style*="absolute"]), .qf-mtns div:not([class]), .qf-acts__in { display:contents; }
+  .qf-tl__media div:not([class]) { height:100%; }
   .qf-wrap { width:100%; max-width:1680px; margin:0 auto; padding:0 clamp(20px, 5vw, 96px); }
   .qf-sec { padding:clamp(64px, 9vw, 120px) 0; }
   .qf-sec--dark { background:radial-gradient(ellipse at top, #2e110d, #120806 70%); color:var(--on-dark); }
@@ -47,7 +47,7 @@
   .qf-hero__bg { position:absolute; inset:-30px; background:url(https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/kaiguang-1.jpg) center/cover; filter:blur(3px) saturate(1.1); transform:scale(1.05); animation:qfZoom 24s ease-in-out infinite alternate; }
   .qf-hero::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(28,14,11,.55), rgba(110,29,23,.55) 55%, rgba(28,14,11,.92)); }
   @keyframes qfZoom { to { transform:scale(1.15) translateY(-12px); } }
-  .qf-hero > [data-rb] { position:relative; z-index:1; }
+  .qf-hero [data-rb="Particles"] { position:relative; z-index:1; }
   .qf-hero__inner { text-align:center; padding:0 20px; }
   .qf-hero__tag { display:inline-block; border:1px solid rgba(232,207,143,.6); color:var(--gold-lt); padding:6px 18px; font-size:13px; letter-spacing:.5em; margin-bottom:22px; }
   .qf-hero__title, .qf-hero__title h1 { white-space:nowrap; }
