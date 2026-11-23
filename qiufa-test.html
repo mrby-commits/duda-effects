@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>十六年求法 測試</title><style>body{margin:0}</style></head><body><div id="dm" style="max-width:1200px;margin:0 auto">
+<!-- 平安宮「十六年求法」專題頁：整頁放在一個 DUDA HTML 元件裡 -->
+<script src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.4.0/dist/effects.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+
+<style>
+  .qf { --red:#9c2b22; --red-dk:#6e1d17; --gold:#c9a24a; --gold-lt:#e8cf8f; --ink:#2a1d14; --paper:#f6f1e7; --paper-dk:#ece2cf; --muted:#6b5a4a;
+    font-family:"Noto Serif TC","Songti TC","PMingLiU",serif; color:var(--ink); background:var(--paper); line-height:1.9; letter-spacing:.04em;
+    width:100vw; margin-left:calc(50% - 50vw); overflow-x:clip; }
+  .qf *, .qf *::before, .qf *::after { box-sizing:border-box; }
+  .qf img { max-width:100%; display:block; }
+  .qf .leaflet-container img { max-width:none !important; }
+  .qf h2, .qf h3, .qf p { margin:0; }
+  /* 效果庫掛載時會多包一層 div：在格線容器裡讓它「透明」 */
+  .qf-acts > div, .qf-sites > div, .qf-mtns > div { display:contents; }
+  .qf-tl__media > div { height:100%; }
+  .qf-wrap { max-width:1120px; margin:0 auto; padding:0 24px; }
+  .qf-sec { padding:clamp(64px, 9vw, 120px) 0; }
+  .qf-sec--dark { background:radial-gradient(ellipse at top, #3a1612, #1c0e0b 70%); color:#f1e6d0; }
+  .qf-sec--alt { background:var(--paper-dk); }
+  .qf-kicker { display:flex; align-items:center; gap:12px; font-size:13px; letter-spacing:.4em; color:var(--red); font-weight:600; margin-bottom:14px; }
+  .qf-kicker::before { content:""; width:36px; height:2px; background:var(--gold); }
+  .qf-sec--dark .qf-kicker { color:var(--gold-lt); }
+  .qf-h2 { font-size:clamp(28px, 4vw, 44px); font-weight:900; letter-spacing:.12em; line-height:1.35; margin-bottom:20px; }
+  .qf-lead { font-size:clamp(16px, 1.6vw, 18px); color:var(--muted); max-width:46em; }
+  .qf-sec--dark .qf-lead { color:#cdbb9c; }
+  .qf-note { font-size:13px; color:var(--muted); margin-top:16px; }
+
+  /* ── 橫幅 ── */
+  .qf-hero { position:relative; background:#1c0e0b; color:#fff; overflow:hidden; }
+  .qf-hero__bg { position:absolute; inset:-30px; background:url(https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/kaiguang-1.jpg) center/cover; filter:blur(3px) saturate(1.1); transform:scale(1.05); animation:qfZoom 24s ease-in-out infinite alternate; }
+  .qf-hero::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(28,14,11,.55), rgba(110,29,23,.55) 55%, rgba(28,14,11,.92)); }
+  @keyframes qfZoom { to { transform:scale(1.15) translateY(-12px); } }
+  .qf-hero > [data-rb] { position:relative; z-index:1; }
+  .qf-hero__inner { text-align:center; padding:0 20px; }
+  .qf-hero__tag { display:inline-block; border:1px solid rgba(232,207,143,.6); color:var(--gold-lt); padding:6px 18px; font-size:13px; letter-spacing:.5em; margin-bottom:22px; }
+  .qf-hero__title, .qf-hero__title h1 { white-space:nowrap; }
+  .qf-hero__title { font-size:clamp(38px, 12vw, 128px); font-weight:900; letter-spacing:.18em; line-height:1.1; text-shadow:0 6px 30px rgba(0,0,0,.5); }
+  .qf-hero__sub { margin-top:20px; font-size:clamp(15px, 2vw, 20px); color:#f3e2b8; letter-spacing:.2em; }
+  .qf-hero__sub b { color:var(--gold-lt); font-weight:600; }
+  .qf-hero__scroll { margin-top:36px; font-size:12px; letter-spacing:.4em; color:rgba(255,255,255,.7); }
+  .qf-hero__scroll::after { content:""; display:block; width:1px; height:44px; margin:10px auto 0; background:linear-gradient(var(--gold-lt), transparent); animation:qfDrop 2s ease-in-out infinite; transform-origin:top; }
+  @keyframes qfDrop { 0%{transform:scaleY(0)} 50%{transform:scaleY(1)} 100%{transform:scaleY(1);opacity:0} }
+
+  /* ── 數字 ── */
+  .qf-stats { display:grid; grid-template-columns:repeat(4, 1fr); border-top:2px solid var(--gold); border-bottom:2px solid var(--gold); background:linear-gradient(90deg, var(--red-dk), var(--red) 50%, var(--red-dk)); color:#f3e2b8; }
+  .qf-stat { text-align:center; padding:30px 10px; border-right:1px solid rgba(232,207,143,.25); }
+  .qf-stat:last-child { border-right:0; }
+  .qf-stat__num { font-size:clamp(34px, 5vw, 56px); font-weight:900; color:#fff; line-height:1.1; }
+  .qf-stat__num small { font-size:.4em; margin-left:4px; color:var(--gold-lt); }
+  .qf-stat__label { font-size:14px; letter-spacing:.2em; margin-top:6px; }
+
+  /* ── 緣起 ── */
+  .qf-origin { display:grid; grid-template-columns:minmax(220px, 300px) 1fr; gap:clamp(32px, 6vw, 80px); align-items:center; }
+  .qf-scroll { position:relative; background:linear-gradient(#c9786a, #b8604f); padding:36px 26px; border-radius:4px; box-shadow:0 20px 40px rgba(110,29,23,.25), inset 0 0 0 6px rgba(255,255,255,.12); writing-mode:vertical-rl; margin:0 auto; color:#1b120d; }
+  .qf-scroll::before, .qf-scroll::after { content:""; position:absolute; left:-10px; right:-10px; height:12px; background:linear-gradient(#7a4a1d, #4a2b10); border-radius:6px; }
+  .qf-scroll::before { top:-8px; } .qf-scroll::after { bottom:-8px; }
+  .qf-scroll__title { font-size:20px; font-weight:900; letter-spacing:.35em; margin-left:22px; }
+  .qf-scroll__line { font-size:clamp(26px, 3vw, 34px); font-weight:900; letter-spacing:.5em; line-height:1.9; }
+  .qf-origin__text p + p { margin-top:1.1em; }
+  .qf-origin__text strong { color:var(--red); }
+
+  /* ── 四幕故事 ── */
+  .qf-acts { display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; margin-top:48px; counter-reset:act; position:relative; }
+  .qf-acts::before { content:""; position:absolute; top:34px; left:12%; right:12%; height:1px; background:linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .qf-act { position:relative; text-align:center; padding:0 6px; }
+  .qf-act__dot { width:68px; height:68px; margin:0 auto 18px; border-radius:50%; display:grid; place-items:center; font-size:24px; font-weight:900; color:var(--gold-lt); background:radial-gradient(circle at 35% 30%, #a83a2e, var(--red-dk)); border:2px solid var(--gold); box-shadow:0 0 0 6px rgba(201,162,74,.15); position:relative; }
+  .qf-act__year { font-size:13px; letter-spacing:.25em; color:var(--gold-lt); }
+  .qf-act__title { font-size:22px; font-weight:900; letter-spacing:.3em; margin:4px 0 10px; color:#fff; }
+  .qf-act p { font-size:15px; color:#cdbb9c; line-height:1.85; }
+
+  /* ── 時間軸 ── */
+  .qf-tl { position:relative; margin-top:56px; }
+  .qf-tl::before { content:""; position:absolute; left:50%; top:0; bottom:0; width:2px; transform:translateX(-50%); background:linear-gradient(var(--gold), var(--red) 50%, var(--gold)); }
+  .qf-tl__item { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:64px; margin-bottom:56px; align-items:center; }
+  .qf-tl__item:last-child { margin-bottom:0; }
+  .qf-tl__item::before { content:""; position:absolute; left:50%; top:50%; width:18px; height:18px; transform:translate(-50%,-50%) rotate(45deg); background:var(--red); border:3px solid var(--paper); box-shadow:0 0 0 2px var(--gold); z-index:1; }
+  .qf-tl__item:nth-child(even) .qf-tl__card { order:2; }
+  .qf-tl__item:nth-child(odd) .qf-tl__card { text-align:right; }
+  .qf-tl__item:nth-child(odd) .qf-tl__card .qf-tl__tags { justify-content:flex-end; }
+  .qf-tl__year { font-size:clamp(30px, 4vw, 44px); font-weight:900; color:var(--red); line-height:1.1; letter-spacing:.06em; }
+  .qf-tl__year small { display:block; font-size:13px; color:var(--muted); letter-spacing:.2em; font-weight:400; margin-top:4px; }
+  .qf-tl__title { font-size:20px; font-weight:900; margin:10px 0 8px; letter-spacing:.12em; }
+  .qf-tl__card p { font-size:15.5px; color:#4a3b2e; }
+  .qf-tl__tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .qf-tag { font-size:12px; padding:2px 10px; border:1px solid var(--gold); color:var(--red-dk); border-radius:999px; background:rgba(201,162,74,.08); letter-spacing:.1em; }
+  .qf-tl__media { border-radius:10px; overflow:hidden; box-shadow:0 14px 34px rgba(60,30,10,.18); aspect-ratio:3/2; background:#ddd; }
+  .qf-tl__media img { width:100%; height:100%; object-fit:cover; transition:transform .8s cubic-bezier(.2,.8,.2,1); cursor:zoom-in; }
+  .qf-tl__media:hover img { transform:scale(1.05); }
+  .qf-tl__media--text { display:grid; place-items:center; background:linear-gradient(135deg, var(--red-dk), var(--red)); color:#f3e2b8; padding:28px; text-align:center; font-size:15px; }
+  .qf-tl__media--text b { display:block; font-size:clamp(40px, 6vw, 64px); color:#fff; line-height:1.1; font-weight:900; }
+
+  /* ── 影片 ── */
+  .qf-video { display:grid; grid-template-columns:1.6fr 1fr; gap:40px; align-items:center; }
+  .qf-video__frame { position:relative; aspect-ratio:16/9; border-radius:10px; overflow:hidden; border:2px solid var(--gold); box-shadow:0 24px 60px rgba(0,0,0,.45); background:#000; }
+  .qf-video__frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .qf-video dl { margin:22px 0 0; display:grid; grid-template-columns:auto 1fr; gap:6px 16px; font-size:15px; }
+  .qf-video dt { color:var(--gold-lt); letter-spacing:.2em; }
+  .qf-video dd { margin:0; color:#e6d7bb; }
+
+  /* ── 聖地卡片 ── */
+  .qf-sites { display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; margin-top:44px; }
+  .qf-site { background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(60,30,10,.10); display:flex; flex-direction:column; }
+  .qf-site__img { aspect-ratio:4/3; overflow:hidden; background:var(--paper-dk); }
+  .qf-site__img img { width:100%; height:100%; object-fit:cover; transition:transform .8s cubic-bezier(.2,.8,.2,1); cursor:zoom-in; }
+  .qf-site:hover .qf-site__img img { transform:scale(1.06); }
+  .qf-site__img--plain { display:grid; place-items:center; background:radial-gradient(circle at 50% 40%, #fbf3e0, var(--paper-dk)); }
+  .qf-site__img--plain span { writing-mode:vertical-rl; font-size:34px; font-weight:900; letter-spacing:.3em; color:var(--red); opacity:.85; }
+  .qf-site__body { padding:20px 22px 24px; flex:1; }
+  .qf-site__name { font-size:21px; font-weight:900; letter-spacing:.15em; }
+  .qf-site__alias { font-size:12.5px; color:var(--muted); letter-spacing:.1em; }
+  .qf-site__body p { font-size:14.5px; margin-top:10px; color:#4a3b2e; line-height:1.8; }
+  .qf-site__visit { margin-top:12px; padding-top:12px; border-top:1px dashed rgba(201,162,74,.6); font-size:13.5px; color:var(--red-dk); }
+  .qf-site__visit b { color:var(--red); }
+
+  /* ── 地圖 ── */
+  .qf-map-ui { display:flex; flex-wrap:wrap; gap:10px; margin:36px 0 16px; }
+  .qf-btn { font:inherit; font-size:14px; letter-spacing:.15em; padding:9px 20px; border-radius:999px; border:1.5px solid var(--red); background:transparent; color:var(--red); cursor:pointer; transition:all .25s ease; }
+  .qf-btn:hover, .qf-btn.is-on { background:var(--red); color:#fff; }
+  .qf-map { height:clamp(380px, 58vw, 560px); border-radius:14px; overflow:hidden; border:2px solid var(--gold); box-shadow:0 14px 34px rgba(60,30,10,.15); background:var(--paper-dk); }
+  .qf-map .leaflet-tile-pane { filter:sepia(.35) saturate(.75) brightness(1.02); }
+  .qf-map .leaflet-popup-content { font-family:"Noto Serif TC",serif; font-size:14px; line-height:1.7; margin:12px 16px; }
+  .qf-map .leaflet-popup-content b { color:var(--red); font-size:16px; }
+  .qf-pin { width:18px; height:18px; border-radius:50%; background:var(--red); border:3px solid #fff; box-shadow:0 0 0 2px var(--gold), 0 4px 10px rgba(0,0,0,.35); }
+  .qf-pin--home { background:var(--gold); box-shadow:0 0 0 2px var(--red), 0 4px 10px rgba(0,0,0,.35); }
+  .qf-pin--mtn { background:#fff; border-color:var(--red); }
+  .qf-pin--main { width:24px; height:24px; animation:qfPulse 2s ease-out infinite; }
+  @keyframes qfPulse { 0%{box-shadow:0 0 0 2px var(--gold),0 0 0 2px rgba(156,43,34,.5)} 100%{box-shadow:0 0 0 2px var(--gold),0 0 0 18px rgba(156,43,34,0)} }
+  .qf-legend { display:flex; flex-wrap:wrap; gap:18px; font-size:13px; color:var(--muted); margin-top:12px; }
+  .qf-legend span { display:inline-flex; align-items:center; gap:6px; }
+  .qf-legend i { width:12px; height:12px; border-radius:50%; display:inline-block; }
+
+  /* ── 四大佛山 ── */
+  .qf-mtns { display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; margin-top:44px; }
+  .qf-mtn { position:relative; padding:30px 22px 26px; border-radius:14px; border:1px solid rgba(232,207,143,.3); background:rgba(255,255,255,.04); text-align:center; }
+  .qf-mtn--main { background:linear-gradient(160deg, rgba(201,162,74,.25), rgba(156,43,34,.35)); border-color:var(--gold); }
+  .qf-mtn__badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--gold); color:var(--ink); font-size:12px; letter-spacing:.2em; padding:2px 12px; border-radius:999px; white-space:nowrap; font-weight:600; }
+  .qf-mtn__glyph { font-size:44px; font-weight:900; color:var(--gold-lt); line-height:1; }
+  .qf-mtn__name { font-size:22px; font-weight:900; letter-spacing:.2em; margin-top:12px; color:#fff; }
+  .qf-mtn__prov { font-size:13px; color:#bfae8f; letter-spacing:.15em; }
+  .qf-mtn__bodhi { margin-top:14px; font-size:16px; color:var(--gold-lt); letter-spacing:.15em; }
+  .qf-mtn p { font-size:14px; color:#cdbb9c; margin-top:8px; line-height:1.8; }
+  .qf-temples { margin-top:44px; padding:28px; border:1px solid rgba(232,207,143,.35); border-radius:14px; }
+  .qf-temples h3 { font-size:18px; letter-spacing:.2em; color:var(--gold-lt); margin-bottom:14px; }
+  .qf-temples ul { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:10px; }
+  .qf-temples li { padding:6px 16px; border-radius:999px; background:rgba(201,162,74,.15); border:1px solid rgba(232,207,143,.4); color:#f3e2b8; font-size:15px; letter-spacing:.15em; }
+
+  /* ── 地藏信仰 ── */
+  .qf-faith { display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px, 5vw, 64px); align-items:start; margin-top:40px; }
+  .qf-quote { position:relative; padding:34px 34px 30px; background:#fff; border-radius:14px; box-shadow:0 8px 24px rgba(60,30,10,.08); border-left:4px solid var(--red); }
+  .qf-quote + .qf-quote { margin-top:22px; }
+  .qf-quote__text { font-size:clamp(20px, 2.4vw, 26px); font-weight:900; letter-spacing:.2em; line-height:1.7; color:var(--red-dk); }
+  .qf-quote__src { margin-top:10px; font-size:13px; color:var(--muted); letter-spacing:.1em; }
+  .qf-faith__list { list-style:none; margin:0; padding:0; }
+  .qf-faith__list li { padding:18px 0; border-bottom:1px solid rgba(201,162,74,.4); }
+  .qf-faith__list li:first-child { padding-top:0; }
+  .qf-faith__list h3 { font-size:18px; letter-spacing:.15em; color:var(--red); margin-bottom:6px; }
+  .qf-faith__list p { font-size:15px; color:#4a3b2e; }
+
+  /* ── 相簿 ── */
+  .qf-gallery { columns:3 260px; column-gap:16px; margin-top:44px; }
+  .qf-gallery figure { margin:0 0 16px; break-inside:avoid; border-radius:10px; overflow:hidden; position:relative; cursor:zoom-in; background:#000; }
+  .qf-gallery img { width:100%; transition:transform .8s cubic-bezier(.2,.8,.2,1), opacity .4s; }
+  .qf-gallery figure:hover img { transform:scale(1.05); opacity:.85; }
+  .qf-gallery figcaption { position:absolute; left:0; right:0; bottom:0; padding:28px 14px 10px; font-size:13.5px; color:#fff; letter-spacing:.08em; background:linear-gradient(transparent, rgba(0,0,0,.75)); }
+  .qf-lb { position:fixed; inset:0; z-index:99999; background:rgba(15,8,6,.92); display:none; align-items:center; justify-content:center; flex-direction:column; padding:24px; cursor:zoom-out; }
+  .qf-lb.is-open { display:flex; }
+  .qf-lb img { max-width:min(1100px, 94vw); max-height:80vh; border-radius:6px; box-shadow:0 20px 60px rgba(0,0,0,.6); }
+  .qf-lb p { color:#f3e2b8; margin-top:14px; letter-spacing:.12em; font-family:"Noto Serif TC",serif; text-align:center; }
+  .qf-lb button { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.3); width:48px; height:48px; border-radius:50%; font-size:22px; cursor:pointer; }
+  .qf-lb .qf-lb__prev { left:16px; } .qf-lb .qf-lb__next { right:16px; }
+
+  /* ── 結語 ── */
+  .qf-end { text-align:center; }
+  .qf-end__verse { font-size:clamp(26px, 4.4vw, 50px); font-weight:900; letter-spacing:.3em; line-height:1.6; color:#fff; }
+  .qf-end__verse span { color:var(--gold-lt); }
+  .qf-end p { color:#cdbb9c; margin-top:22px; }
+  .qf-cta { display:inline-block; margin-top:30px; padding:14px 38px; border-radius:999px; background:var(--gold); color:var(--ink) !important; font-weight:900; letter-spacing:.3em; text-decoration:none !important; transition:transform .3s ease, box-shadow .3s ease; }
+  .qf-cta:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(201,162,74,.35); }
+
+  /* ── 手機 ── */
+  @media (max-width: 900px) {
+    .qf-stats { grid-template-columns:repeat(2, 1fr); }
+    .qf-stat:nth-child(2) { border-right:0; }
+    .qf-stat:nth-child(-n+2) { border-bottom:1px solid rgba(232,207,143,.25); }
+    .qf-origin, .qf-video, .qf-faith { grid-template-columns:1fr; }
+    .qf-acts { grid-template-columns:repeat(2, 1fr); row-gap:36px; }
+    .qf-acts::before { display:none; }
+    .qf-sites { grid-template-columns:repeat(2, 1fr); }
+    .qf-mtns { grid-template-columns:repeat(2, 1fr); row-gap:28px; }
+    .qf-tl::before { left:9px; transform:none; }
+    .qf-tl__item { grid-template-columns:1fr; gap:18px; padding-left:40px; }
+    .qf-tl__item::before { left:10px; top:14px; }
+    .qf-tl__item:nth-child(even) .qf-tl__card { order:0; }
+    .qf-tl__item:nth-child(odd) .qf-tl__card { text-align:left; }
+    .qf-tl__item:nth-child(odd) .qf-tl__card .qf-tl__tags { justify-content:flex-start; }
+  }
+  @media (max-width: 560px) {
+    .qf-sites, .qf-acts { grid-template-columns:1fr; }
+    .qf-mtns { grid-template-columns:1fr; }
+    .qf-lb button { display:none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .qf-hero__bg, .qf-pin--main, .qf-hero__scroll::after { animation:none; } }
+</style>
+
+<div class="qf">
+
+  <!-- ═══ 橫幅 ═══ -->
+  <header class="qf-hero">
+    <div class="qf-hero__bg"></div>
+    <div data-rb="Particles" data-height="clamp(560px, 88vh, 820px)" data-background="transparent" data-colors="#e8cf8f,#c9a24a,#ffffff" data-count="160" data-speed="0.06" data-size="70" data-align="center">
+      <div class="qf-hero__inner">
+        <div class="qf-hero__tag">臺南平安宮・專題</div>
+        <div data-rb="SplitText" data-tag="h1" data-delay="140" data-duration="900" data-distance="60" data-align="center" class="qf-hero__title" data-font-size="clamp(38px, 12vw, 128px)" data-color="#fff" data-font-weight="900">十六年求法</div>
+        <p class="qf-hero__sub">民國九十八年 — 一百一十三年<br><b>溫府千歲</b>率領・安徽<b>九華山</b>地藏法脈</p>
+        <div class="qf-hero__scroll">往下閱讀</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ 數字 ═══ -->
+  <div class="qf-stats">
+    <div class="qf-stat"><div class="qf-stat__num"><span data-rb="CountUp" data-to="16" data-duration="1600"></span><small>年</small></div><div class="qf-stat__label">求法歲月</div></div>
+    <div class="qf-stat"><div class="qf-stat__num"><span data-rb="CountUp" data-to="26" data-duration="1600"></span><small>位</small></div><div class="qf-stat__label">105 年護駕成員</div></div>
+    <div class="qf-stat"><div class="qf-stat__num"><span data-rb="CountUp" data-to="9" data-duration="1600"></span><small>位</small></div><div class="qf-stat__label">化城寺開光法師</div></div>
+    <div class="qf-stat"><div class="qf-stat__num"><span data-rb="CountUp" data-to="720" data-duration="2200"></span><small>尊</small></div><div class="qf-stat__label">護身地藏圓滿開光</div></div>
+  </div>
+
+  <!-- ═══ 緣起 ═══ -->
+  <section class="qf-sec">
+    <div class="qf-wrap qf-origin">
+      <div data-rb="FadeIn" data-direction="up" data-distance="50" data-duration="1100">
+        <div class="qf-scroll">
+          <div class="qf-scroll__title">地藏王菩薩降文</div>
+          <div class="qf-scroll__line">上天好德慈悲心</div>
+          <div class="qf-scroll__line">地下人物萬萬年</div>
+        </div>
+      </div>
+      <div class="qf-origin__text" data-rb="FadeIn" data-delay="150">
+        <div class="qf-kicker">求法緣起</div>
+        <h2 class="qf-h2">開啟求法路<br>中國四大佛山——安徽九華山</h2>
+        <p>民國<strong>九十八年</strong>，在<strong>溫府千歲</strong>與<strong>溫府夫人</strong>率領下，平安宮首度渡海前往中國四大佛山之一的安徽九華山，參訪<strong>化城寺</strong>、<strong>拜經臺</strong>、<strong>護國肉身寶塔</strong>與<strong>祇園禪寺</strong>，就此開啟一段長達十六年的求法因緣。</p>
+        <p>九華山是地藏王菩薩的應化道場。相傳唐代新羅王族金喬覺渡海來此苦修數十載，圓寂後肉身不壞，被尊為地藏菩薩示現，世稱「金地藏」。平安宮循著這條法脈，一次次上山參訪、祝壽、請法，最終迎請地藏王菩薩金身回宮供奉，讓臺南的信徒弟子也能就近禮拜供養。</p>
+        <p>地藏王菩薩所降之文——「上天好德慈悲心，地下人物萬萬年」——是這段旅程的起點，也是平安宮代代傳承的心念。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 四幕故事 ═══ -->
+  <section class="qf-sec qf-sec--dark">
+    <div class="qf-wrap">
+      <div class="qf-kicker">完整故事</div>
+      <h2 class="qf-h2">出發 → 求法 → 帶回 → 回宮</h2>
+      <p class="qf-lead">十六年間，平安宮從一次朝聖出發，走到迎請金身、開光結緣。四個階段，串起一段跨越海峽的信仰之路。</p>
+      <div class="qf-acts" data-rb="FadeIn" data-stagger="180" data-distance="30">
+        <div class="qf-acts__in" style="display:contents">
+          <div class="qf-act"><div class="qf-act__dot">壹</div><div class="qf-act__year">民國 98 年</div><div class="qf-act__title">出發</div><p>溫府千歲與夫人率領，首度前往九華山化城寺、拜經臺、護國肉身寶塔及祇園禪寺求法。</p></div>
+          <div class="qf-act"><div class="qf-act__dot">貳</div><div class="qf-act__year">民國 104 年</div><div class="qf-act__title">求法</div><p>再赴九華山，於農曆七月地藏聖誕期間至月身寶殿祝壽請法，並至地藏寶殿參拜，蒙老和尚加持。</p></div>
+          <div class="qf-act"><div class="qf-act__dot">參</div><div class="qf-act__year">民國 105 年</div><div class="qf-act__title">帶回</div><p>奉溫府千歲、溫府夫人指示，於化城寺由九位法師開光，二十六位成員奉請天界地藏王菩薩金身回宮。</p></div>
+          <div class="qf-act"><div class="qf-act__dot">肆</div><div class="qf-act__year">民國 109 — 110 年</div><div class="qf-act__title">回宮</div><p>續迎人界地藏王菩薩及三尊金身地藏王菩薩，並圓滿七百二十尊六吋護身地藏王菩薩開光。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 時間軸 ═══ -->
+  <section class="qf-sec">
+    <div class="qf-wrap">
+      <div class="qf-kicker">年份・地點時間軸</div>
+      <h2 class="qf-h2">十六年求法歷程</h2>
+      <p class="qf-lead">依平安宮宮內文獻整理。點選照片可放大檢視。</p>
+
+      <div class="qf-tl">
+        <div class="qf-tl__item">
+          <div class="qf-tl__card" data-rb="FadeIn" data-direction="right" data-distance="50">
+            <div class="qf-tl__year">民國 98 年<small>2009・首度求法</small></div>
+            <h3 class="qf-tl__title">開啟求法路</h3>
+            <p>溫府千歲與溫府夫人率領，首度前往安徽九華山化城寺、拜經臺、護國肉身寶塔及祇園禪寺求法。地藏王菩薩降文「上天好德慈悲心，地下人物萬萬年」。</p>
+            <div class="qf-tl__tags"><span class="qf-tag">化城寺</span><span class="qf-tag">拜經臺</span><span class="qf-tag">護國肉身寶塔</span><span class="qf-tag">祇園禪寺</span></div>
+          </div>
+          <div class="qf-tl__media" data-rb="FadeIn" data-direction="left" data-distance="50"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/huacheng-sutra.jpg" alt="九華山化城寺大殿" data-cap="九華山化城寺" loading="lazy"></div>
+        </div>
+
+        <div class="qf-tl__item">
+          <div class="qf-tl__card" data-rb="FadeIn" data-direction="left" data-distance="50">
+            <div class="qf-tl__year">民國 104 年<small>2015/9/10 – 9/14・農曆七月二十八至八月二日</small></div>
+            <h3 class="qf-tl__title">朝聖祝壽之行</h3>
+            <p>再度前往九華山，於地藏聖誕期間至月身寶殿向地藏王菩薩祝壽請法，並至地藏寶殿參拜，蒙老和尚加持。自此開啟與九華山地藏王菩薩的殊勝因緣，多次走訪地藏寶殿、法雷寺與化城寺，虔心參訪、求法取經。</p>
+            <div class="qf-tl__tags"><span class="qf-tag">月身寶殿</span><span class="qf-tag">地藏寶殿</span><span class="qf-tag">法雷寺</span><span class="qf-tag">化城寺</span></div>
+          </div>
+          <div class="qf-tl__media" data-rb="FadeIn" data-direction="right" data-distance="50"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/yueshen-plaque.jpg" alt="月身寶殿「東南第一山」匾額" data-cap="月身寶殿・「東南第一山」匾額" loading="lazy"></div>
+        </div>
+
+        <div class="qf-tl__item">
+          <div class="qf-tl__card" data-rb="FadeIn" data-direction="right" data-distance="50">
+            <div class="qf-tl__year">民國 105 年 8 月 8 日<small>2016・上午</small></div>
+            <h3 class="qf-tl__title">化城寺開光法會</h3>
+            <p>奉溫府千歲、溫府夫人指示，前往九華山奉請掌管天界之地藏王菩薩金身，供奉於平安宮，讓信徒弟子禮拜供養（宮內文獻記載：金地藏菩薩乃地藏菩薩大弟子）。此行共二十六位成員參與，於化城寺由九位法師舉行開光法會儀式。</p>
+            <div class="qf-tl__tags"><span class="qf-tag">天界地藏王菩薩</span><span class="qf-tag">26 位成員</span><span class="qf-tag">9 位法師</span></div>
+          </div>
+          <div class="qf-tl__media" data-rb="FadeIn" data-direction="left" data-distance="50"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/kaiguang-1.jpg" alt="化城寺地藏王菩薩開光法會" data-cap="化城寺地藏王菩薩開光法會" loading="lazy"></div>
+        </div>
+
+        <div class="qf-tl__item">
+          <div class="qf-tl__card" data-rb="FadeIn" data-direction="left" data-distance="50">
+            <div class="qf-tl__year">民國 105 年 8 月 9 日<small>2016・下午</small></div>
+            <h3 class="qf-tl__title">法供養・月身寶殿過爐</h3>
+            <p>於化城寺內舉行法供養，全體莊嚴誦唸《地藏菩薩本願經》一部，歷時二小時，供養諸佛菩薩。下午四點多前往月身寶殿過爐，途中陽光自雲層隙縫中灑下，猶如佛光加持、光芒萬丈；溫府千歲、溫府夫人、金龍太子及眾地藏王菩薩庇佑加持，令此行任務殊勝圓滿。</p>
+            <div class="qf-tl__tags"><span class="qf-tag">地藏菩薩本願經</span><span class="qf-tag">月身寶殿</span><span class="qf-tag">金龍太子</span></div>
+          </div>
+          <div class="qf-tl__media" data-rb="FadeIn" data-direction="right" data-distance="50"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/kaiguang-2.jpg" alt="法師於地藏王菩薩金身前修法" data-cap="法師於地藏王菩薩金身前修法" loading="lazy"></div>
+        </div>
+
+        <div class="qf-tl__item">
+          <div class="qf-tl__card" data-rb="FadeIn" data-direction="right" data-distance="50">
+            <div class="qf-tl__year">民國 109 — 110 年<small>2020 – 2021</small></div>
+            <h3 class="qf-tl__title">迎請金身・圓滿開光</h3>
+            <p>民國一〇九年因緣再迎請人界地藏王菩薩；一一〇年再迎請三尊金身地藏王菩薩。期間並圓滿為七百二十尊六吋護身地藏王菩薩舉行開光儀式，因緣殊勝，功德圓滿。</p>
+            <div class="qf-tl__tags"><span class="qf-tag">人界地藏王菩薩</span><span class="qf-tag">三尊金身</span><span class="qf-tag">720 尊護身地藏</span></div>
+          </div>
+          <div class="qf-tl__media qf-tl__media--text" data-rb="FadeIn" data-direction="left" data-distance="50"><div><b>720</b>尊六吋護身地藏王菩薩<br>圓滿開光</div></div>
+        </div>
+
+        <div class="qf-tl__item">
+          <div class="qf-tl__card" data-rb="FadeIn" data-direction="left" data-distance="50">
+            <div class="qf-tl__year">民國 113 年<small>2024・十六年回望</small></div>
+            <h3 class="qf-tl__title">九華山・百寺之山</h3>
+            <p>根據一百一十三年資料顯示，安徽省共有十四間大陸國家級重點寺院，其中九華山即占九間；若再加上未列入統計之寺廟，總數高達九十九間。平安宮十六年來的求法足跡，正是走在這座地藏聖山之上。</p>
+            <div class="qf-tl__tags"><span class="qf-tag">14 間國家級重點寺院</span><span class="qf-tag">九華山占 9 間</span><span class="qf-tag">共 99 間寺廟</span></div>
+          </div>
+          <div class="qf-tl__media" data-rb="FadeIn" data-direction="right" data-distance="50"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/yueshen-drum.jpg" alt="九華山月身寶殿鼓樓" data-cap="九華山月身寶殿・鼓樓" loading="lazy" style="object-position:center 30%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 影片 ═══ -->
+  <section class="qf-sec qf-sec--dark">
+    <div class="qf-wrap qf-video">
+      <div class="qf-video__frame" data-rb="FadeIn" data-distance="40">
+        <iframe src="https://www.youtube-nocookie.com/embed/hQiQKHacuXY?rel=0" title="九華山地藏王菩薩-朝聖祝壽之行" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <div data-rb="FadeIn" data-delay="150">
+        <div class="qf-kicker">影像紀錄</div>
+        <h2 class="qf-h2">九華山地藏王菩薩<br>朝聖祝壽之行</h2>
+        <p class="qf-lead">民國一〇四年地藏聖誕期間，平安宮信眾隨溫府千歲上九華山，為地藏王菩薩祝壽請法的完整紀錄。</p>
+        <dl>
+          <dt>日期</dt><dd>2015 年 9 月 10 日 – 14 日</dd>
+          <dt>農曆</dt><dd>七月二十八 – 八月二日</dd>
+          <dt>片長</dt><dd>10 分 44 秒</dd>
+          <dt>頻道</dt><dd>走過百年的 台南平安宮</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 九華山聖地 ═══ -->
+  <section class="qf-sec">
+    <div class="qf-wrap">
+      <div class="qf-kicker">求法足跡</div>
+      <h2 class="qf-h2">九華山上的七個印記</h2>
+      <p class="qf-lead">十六年間，平安宮在九華山走過的寺院與殿宇。每一處都留下參拜、請法或開光的紀錄。</p>
+      <div class="qf-sites" data-rb="FadeIn" data-stagger="120" data-distance="30">
+        <div style="display:contents">
+          <article class="qf-site">
+            <div class="qf-site__img"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/kaiguang-3.jpg" alt="化城寺大殿" data-cap="化城寺大殿" loading="lazy" style="object-position:center 25%"></div>
+            <div class="qf-site__body">
+              <div class="qf-site__name">化城寺</div><div class="qf-site__alias">九華山開山主寺</div>
+              <p>九華山歷史最悠久的寺院之一，被譽為「全山百寺之首」。相傳唐代鄉紳為金地藏建禪居於此，後奉敕賜額，成為地藏道場的發源地；寺內今設九華山歷史文物館。</p>
+              <div class="qf-site__visit"><b>平安宮紀錄</b>｜98 年首訪；105 年開光法會、誦經法供養</div>
+            </div>
+          </article>
+          <article class="qf-site">
+            <div class="qf-site__img"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/yueshen-plaque.jpg" alt="月身寶殿" data-cap="月身寶殿・「東南第一山」匾額" loading="lazy"></div>
+            <div class="qf-site__body">
+              <div class="qf-site__name">月身寶殿</div><div class="qf-site__alias">又稱肉身寶殿・護國肉身寶塔</div>
+              <p>位於神光嶺，殿內寶塔安奉金地藏肉身，是九華山最重要的朝禮聖地。殿前高懸「東南第一山」金匾，每逢地藏聖誕香火最盛。</p>
+              <div class="qf-site__visit"><b>平安宮紀錄</b>｜98 年參拜；104 年祝壽請法；105 年過爐</div>
+            </div>
+          </article>
+          <article class="qf-site">
+            <div class="qf-site__img qf-site__img--plain"><span>祇園</span></div>
+            <div class="qf-site__body">
+              <div class="qf-site__name">祇園禪寺</div><div class="qf-site__alias">大陸國家級重點寺院</div>
+              <p>九華山九間國家級重點寺院之一，位於九華街入口一帶，殿宇宏敞，為山上重要的叢林。</p>
+              <div class="qf-site__visit"><b>平安宮紀錄</b>｜98 年求法</div>
+            </div>
+          </article>
+          <article class="qf-site">
+            <div class="qf-site__img qf-site__img--plain"><span>拜經</span></div>
+            <div class="qf-site__body">
+              <div class="qf-site__name">拜經臺</div><div class="qf-site__alias">天臺峰下</div>
+              <p>相傳為金地藏誦經禮拜之處，臺前石上留有傳說中的「大腳印」，是登天臺峰途中的著名聖蹟。</p>
+              <div class="qf-site__visit"><b>平安宮紀錄</b>｜98 年求法</div>
+            </div>
+          </article>
+          <article class="qf-site">
+            <div class="qf-site__img"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/dasha-teaching.jpg" alt="大廈庵隆首老和尚開示" data-cap="大廈庵・隆首老和尚開示" loading="lazy"></div>
+            <div class="qf-site__body">
+              <div class="qf-site__name">大廈庵</div><div class="qf-site__alias">老和尚開示</div>
+              <p>平安宮信眾於大廈庵聆聽隆首老和尚開示，親炙九華山修行者的教誨。</p>
+              <div class="qf-site__visit"><b>平安宮紀錄</b>｜求法期間參訪</div>
+            </div>
+          </article>
+          <article class="qf-site">
+            <div class="qf-site__img qf-site__img--plain"><span>地藏</span></div>
+            <div class="qf-site__body">
+              <div class="qf-site__name">地藏寶殿・法雷寺</div><div class="qf-site__alias">104 年起多次走訪</div>
+              <p>平安宮於地藏寶殿參拜，蒙老和尚加持；自一〇四年起多次走訪地藏寶殿、法雷寺與化城寺，虔心參訪、求法取經。</p>
+              <div class="qf-site__visit"><b>平安宮紀錄</b>｜104 年起</div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div data-rb="TiltCard" data-target=".qf-site" data-max-tilt="5" data-scale="1.02"></div>
+    </div>
+  </section>
+
+  <!-- ═══ 互動地圖 ═══ -->
+  <section class="qf-sec qf-sec--alt">
+    <div class="qf-wrap">
+      <div class="qf-kicker">互動地圖</div>
+      <h2 class="qf-h2">從臺南到九華山</h2>
+      <p class="qf-lead">點選地圖上的標記查看說明，也可用下方按鈕切換視角。</p>
+      <div class="qf-map-ui">
+        <button class="qf-btn is-on" data-view="all">全覽：求法之路</button>
+        <button class="qf-btn" data-view="jiuhua">九華山聖地</button>
+        <button class="qf-btn" data-view="mtns">中國四大佛山</button>
+      </div>
+      <div class="qf-map" id="qf-map"></div>
+      <div class="qf-legend">
+        <span><i style="background:#c9a24a;border:2px solid #9c2b22"></i>臺南平安宮</span>
+        <span><i style="background:#9c2b22;border:2px solid #fff;box-shadow:0 0 0 1px #c9a24a"></i>九華山求法地</span>
+        <span><i style="background:#fff;border:2px solid #9c2b22"></i>四大佛山</span>
+        <span>標記為約略位置</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 四大佛山 ═══ -->
+  <section class="qf-sec qf-sec--dark">
+    <div class="qf-wrap">
+      <div class="qf-kicker">信仰脈絡</div>
+      <h2 class="qf-h2">中國四大佛山</h2>
+      <p class="qf-lead">漢傳佛教以四座名山分別作為四大菩薩的道場，合稱「四大佛山」，象徵智、行、悲、願四種修行。平安宮的求法之路，走向的是代表「大願」的九華山。</p>
+      <div class="qf-mtns" data-rb="FadeIn" data-stagger="140" data-distance="30">
+        <div style="display:contents">
+          <div class="qf-mtn"><div class="qf-mtn__glyph">智</div><div class="qf-mtn__name">五臺山</div><div class="qf-mtn__prov">山西省</div><div class="qf-mtn__bodhi">文殊菩薩</div><p>大智文殊師利菩薩道場，四大佛山之首。</p></div>
+          <div class="qf-mtn"><div class="qf-mtn__glyph">行</div><div class="qf-mtn__name">峨眉山</div><div class="qf-mtn__prov">四川省</div><div class="qf-mtn__bodhi">普賢菩薩</div><p>大行普賢菩薩道場，以金頂與雲海聞名。</p></div>
+          <div class="qf-mtn"><div class="qf-mtn__glyph">悲</div><div class="qf-mtn__name">普陀山</div><div class="qf-mtn__prov">浙江省</div><div class="qf-mtn__bodhi">觀世音菩薩</div><p>大悲觀世音菩薩道場，海天佛國，位於舟山群島。</p></div>
+          <div class="qf-mtn qf-mtn--main"><div class="qf-mtn__badge">平安宮求法地</div><div class="qf-mtn__glyph">願</div><div class="qf-mtn__name">九華山</div><div class="qf-mtn__prov">安徽省</div><div class="qf-mtn__bodhi">地藏王菩薩</div><p>大願地藏王菩薩道場，號稱「蓮花佛國」，寺廟林立。</p></div>
+        </div>
+      </div>
+      <div class="qf-temples" data-rb="FadeIn" data-distance="30">
+        <h3>九華山的九間國家級重點寺院（依 113 年資料）</h3>
+        <ul><li>化城寺</li><li>肉身殿</li><li>百歲宮</li><li>甘露寺</li><li>祇園寺</li><li>天台寺</li><li>旃檀林</li><li>慧居寺</li><li>上禪堂</li></ul>
+        <p class="qf-note" style="color:#bfae8f">安徽省共十四間國家級重點寺院，九華山即占九間；加上未列入統計之寺廟，總數高達九十九間。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 地藏信仰 ═══ -->
+  <section class="qf-sec">
+    <div class="qf-wrap">
+      <div class="qf-kicker">認識地藏</div>
+      <h2 class="qf-h2">地藏王菩薩與金地藏</h2>
+      <div class="qf-faith">
+        <div data-rb="FadeIn" data-direction="right" data-distance="50">
+          <div class="qf-quote"><div class="qf-quote__text">地獄不空，誓不成佛；<br>眾生度盡，方證菩提。</div><div class="qf-quote__src">地藏王菩薩大願</div></div>
+          <div class="qf-quote"><div class="qf-quote__text">安忍不動猶如大地，<br>靜慮深密猶如秘藏。</div><div class="qf-quote__src">《地藏十輪經》・「地藏」名號由來</div></div>
+        </div>
+        <ul class="qf-faith__list" data-rb="FadeIn" data-stagger="120" data-distance="24">
+          <li><h3>大願地藏王菩薩</h3><p>地藏王菩薩受釋迦牟尼佛付囑，在佛滅之後、彌勒未降生之前，救度六道眾生，以「大願」著稱，是民間最為親切的菩薩之一。</p></li>
+          <li><h3>金地藏・金喬覺</h3><p>相傳為新羅王族，唐代渡海來到九華山，岩棲苦修數十載，世壽九十九歲圓寂。肉身久而不壞，信眾認為是地藏菩薩示現，尊稱「金地藏」，九華山從此成為地藏道場。</p></li>
+          <li><h3>地藏聖誕</h3><p>農曆七月三十日為地藏王菩薩聖誕。平安宮一〇四年的朝聖之行，正是在聖誕期間上山為菩薩祝壽。</p></li>
+          <li><h3>《地藏菩薩本願經》</h3><p>記載地藏王菩薩因地發願與救度眾生的經典。一〇五年化城寺法供養時，全體成員莊嚴誦唸本經一部，歷時二小時。</p></li>
+          <li><h3>平安宮的天界與人界地藏</h3><p>依平安宮宮內記載，一〇五年迎請「掌管天界」之地藏王菩薩金身、一〇九年迎請人界地藏王菩薩，與溫府千歲共同庇佑信眾。</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 相簿 ═══ -->
+  <section class="qf-sec qf-sec--alt">
+    <div class="qf-wrap">
+      <div class="qf-kicker">照片・人物・故事</div>
+      <h2 class="qf-h2">求法相簿</h2>
+      <p class="qf-lead">點選照片可放大，左右鍵切換。</p>
+      <div class="qf-gallery" id="qf-gallery">
+        <figure><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/kaiguang-1.jpg" alt="" data-cap="化城寺地藏王菩薩開光法會" loading="lazy"><figcaption>化城寺地藏王菩薩開光法會</figcaption></figure>
+        <figure><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/yueshen-drum.jpg" alt="" data-cap="九華山月身寶殿・鼓樓" loading="lazy"><figcaption>月身寶殿・鼓樓</figcaption></figure>
+        <figure><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/huacheng-sutra.jpg" alt="" data-cap="化城寺・誦唸《地藏菩薩本願經》" loading="lazy"><figcaption>化城寺・誦唸《地藏菩薩本願經》</figcaption></figure>
+        <figure><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/kaiguang-3.jpg" alt="" data-cap="化城寺開光法會・法師禮佛" loading="lazy"><figcaption>開光法會・法師禮佛</figcaption></figure>
+        <figure><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/kaiguang-2.jpg" alt="" data-cap="法師於地藏王菩薩金身前修法" loading="lazy"><figcaption>地藏王菩薩金身開光</figcaption></figure>
+        <figure><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/yueshen-plaque.jpg" alt="" data-cap="月身寶殿・「東南第一山」匾額" loading="lazy"><figcaption>月身寶殿・東南第一山</figcaption></figure>
+        <figure><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@qiufa-a1/assets/pinan/qiufa/dasha-teaching.jpg" alt="" data-cap="大廈庵・隆首老和尚開示" loading="lazy"><figcaption>大廈庵・隆首老和尚開示</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 結語 ═══ -->
+  <section class="qf-sec qf-sec--dark">
+    <div class="qf-wrap qf-end" data-rb="FadeIn" data-distance="40" data-duration="1200">
+      <div class="qf-kicker" style="justify-content:center">傳承</div>
+      <div class="qf-end__verse">上天好德<span>慈悲心</span><br>地下人物<span>萬萬年</span></div>
+      <p>歡迎蒞臨臺南平安宮，禮拜自九華山迎請回宮的地藏王菩薩金身。<br>開放時間 06:00 – 19:30</p>
+      <a class="qf-cta" href="/">回到平安宮首頁</a>
+    </div>
+  </section>
+
+  <div class="qf-lb" id="qf-lb"><button class="qf-lb__prev" aria-label="上一張">‹</button><img alt=""><p></p><button class="qf-lb__next" aria-label="下一張">›</button></div>
+</div>
+
+<script>
+(function () {
+  /* 燈箱：頁面上所有帶 data-cap 的照片 */
+  function initLightbox() {
+    var lb = document.getElementById('qf-lb'); if (!lb || lb.dataset.ready) return; lb.dataset.ready = '1';
+    document.body.appendChild(lb);
+    var imgs = [], idx = 0, big = lb.querySelector('img'), cap = lb.querySelector('p');
+    // 照片可能被效果庫重新渲染，所以每次點擊時才收集，並用事件委派
+    function collect() {
+      var seen = {}; imgs = [];
+      document.querySelectorAll('.qf img[data-cap]').forEach(function (im) { if (!seen[im.src]) { seen[im.src] = 1; imgs.push({ src: im.src, cap: im.getAttribute('data-cap') }); } });
+    }
+    function show(i) { idx = (i + imgs.length) % imgs.length; big.src = imgs[idx].src; cap.textContent = imgs[idx].cap; }
+    document.addEventListener('click', function (e) {
+      var im = e.target.closest && e.target.closest('.qf img[data-cap]');
+      if (!im) return;
+      collect();
+      show(Math.max(0, imgs.findIndex(function (x) { return x.src === im.src; })));
+      lb.classList.add('is-open');
+    });
+    lb.addEventListener('click', function (e) { if (e.target.tagName !== 'BUTTON') lb.classList.remove('is-open'); });
+    lb.querySelector('.qf-lb__prev').addEventListener('click', function () { show(idx - 1); });
+    lb.querySelector('.qf-lb__next').addEventListener('click', function () { show(idx + 1); });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('is-open')) return;
+      if (e.key === 'Escape') lb.classList.remove('is-open');
+      if (e.key === 'ArrowLeft') show(idx - 1);
+      if (e.key === 'ArrowRight') show(idx + 1);
+    });
+  }
+
+  /* 互動地圖（座標為約略位置） */
+  function initMap() {
+    var el = document.getElementById('qf-map');
+    if (!el || el.dataset.ready) return;
+    if (!window.L) return void setTimeout(initMap, 300);
+    el.dataset.ready = '1';
+    var map = L.map(el, { scrollWheelZoom: false, worldCopyJump: true });
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    function icon(cls) { return L.divIcon({ className: '', html: '<div class="qf-pin ' + cls + '"></div>', iconSize: [24, 24], iconAnchor: [12, 12], popupAnchor: [0, -10] }); }
+    var home = [23.013, 120.201];
+    var jiuhua = [
+      [[30.4805, 117.8052], '化城寺', '九華山開山主寺。98 年首訪；105 年開光法會、誦經法供養。', 'qf-pin--main'],
+      [[30.4786, 117.8090], '月身寶殿', '安奉金地藏肉身。104 年祝壽請法；105 年過爐。', ''],
+      [[30.4822, 117.8030], '祇園禪寺', '國家級重點寺院。98 年求法。', ''],
+      [[30.4548, 117.8128], '拜經臺', '相傳金地藏拜經之處。98 年求法。', '']
+    ];
+    var mtns = [
+      [[39.012, 113.594], '五臺山', '山西・文殊菩薩道場（大智）'],
+      [[29.520, 103.332], '峨眉山', '四川・普賢菩薩道場（大行）'],
+      [[29.994, 122.384], '普陀山', '浙江・觀世音菩薩道場（大悲）'],
+      [[30.480, 117.806], '九華山', '安徽・地藏王菩薩道場（大願）——平安宮求法地']
+    ];
+    L.marker(home, { icon: icon('qf-pin--home') }).addTo(map).bindPopup('<b>臺南平安宮</b><br>主祀溫府千歲<br>十六年求法的起點與歸處');
+    var jLayer = L.layerGroup(jiuhua.map(function (s) { return L.marker(s[0], { icon: icon(s[3]) }).bindPopup('<b>' + s[1] + '</b><br>' + s[2]); })).addTo(map);
+    var mLayer = L.layerGroup(mtns.slice(0, 3).map(function (s) { return L.marker(s[0], { icon: icon('qf-pin--mtn') }).bindPopup('<b>' + s[1] + '</b><br>' + s[2]); })).addTo(map);
+    var route = L.polyline([home, [26.5, 121.6], jiuhua[0][0]], { color: '#9c2b22', weight: 3, dashArray: '8 8', opacity: .85 }).addTo(map);
+    route.bindTooltip('求法之路', { sticky: true });
+    var views = {
+      all: function () { map.flyToBounds(L.latLngBounds([home, jiuhua[0][0], [29.994, 122.384]]).pad(0.35), { duration: 1.2 }); },
+      jiuhua: function () { map.flyToBounds(L.latLngBounds(jiuhua.map(function (s) { return s[0]; })).pad(0.6), { duration: 1.6 }); },
+      mtns: function () { map.flyToBounds(L.latLngBounds(mtns.map(function (s) { return s[0]; }).concat([home])).pad(0.15), { duration: 1.4 }); }
+    };
+    map.fitBounds(L.latLngBounds([home, jiuhua[0][0], [29.994, 122.384]]).pad(0.35));
+    document.querySelectorAll('.qf-map-ui .qf-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('.qf-map-ui .qf-btn').forEach(function (x) { x.classList.toggle('is-on', x === b); });
+        views[b.getAttribute('data-view')]();
+      });
+    });
+    // 元件延後出現時重新計算尺寸
+    setTimeout(function () { map.invalidateSize(); }, 600);
+    if (window.ResizeObserver) new ResizeObserver(function () { map.invalidateSize(); }).observe(el);
+  }
+
+  function boot() { initLightbox(); initMap(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  window.addEventListener('load', boot);
+})();
+</script>
+
+</div></body></html>
