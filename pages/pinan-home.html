@@ -19,10 +19,10 @@
   [id="0b46446c"] [id="017c94b0"]:hover::after, [id="0b46446c"] [id="12ad5ea0"]:hover::after, [id="0b46446c"] [id="10d8c242"]:hover::after, [id="0b46446c"] [id="aa72dbee"]:hover::after { transform:scaleX(1); }
 
   /* 最新消息／公共日誌卡片：圓角、陰影、圖片滑過放大 */
-  [data-widget-type="internal_recent_posts"] .inner { border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(60,30,10,.10); transition:box-shadow .35s ease; background:#fff; }
-  [data-widget-type="internal_recent_posts"] .inner:hover { box-shadow:0 16px 36px rgba(60,30,10,.18); }
-  [data-widget-type="internal_recent_posts"] .inner img { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
-  [data-widget-type="internal_recent_posts"] .inner:hover img { transform: scale(1.06); }
+  [data-widget-type="internal_recent_posts"] .inner.clearfix { border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(60,30,10,.10); transition:box-shadow .35s ease; background:#fff; }
+  [data-widget-type="internal_recent_posts"] .inner.clearfix:hover { box-shadow:0 16px 36px rgba(60,30,10,.18); }
+  [data-widget-type="internal_recent_posts"] .inner.clearfix img { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+  [data-widget-type="internal_recent_posts"] .inner.clearfix:hover img { transform: scale(1.06); }
 
   /* 地方與社區關懷三張卡片：圖片滑過放大 */
   [id="d498becc"] img, [id="35479fbb"] img, [id="41d9af34"] img { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
@@ -48,11 +48,11 @@
 
 <!-- 頁面其他區塊的效果（套用在 DUDA 原生元件上，內容照常可編輯） -->
 <div data-rb="FadeIn" data-target="[id='0b46446c'] [id='017c94b0'], [id='0b46446c'] [id='12ad5ea0'], [id='0b46446c'] [id='10d8c242'], [id='0b46446c'] [id='aa72dbee']" data-stagger="120" data-distance="24"></div>
-<div data-rb="FadeIn" data-target="[id='831f067f'] [data-widget-type='internal_recent_posts'] .inner" data-stagger="140"></div>
-<div data-rb="FadeIn" data-target="[id='6acb365b'] [data-widget-type='internal_recent_posts'] .inner" data-stagger="140"></div>
+<div data-rb="FadeIn" data-target="[id='831f067f'] [data-widget-type='internal_recent_posts'] .inner.clearfix" data-stagger="140"></div>
+<div data-rb="FadeIn" data-target="[id='6acb365b'] [data-widget-type='internal_recent_posts'] .inner.clearfix" data-stagger="140"></div>
 <div data-rb="FadeIn" data-target="#b69e3ce5 img" data-direction="right" data-distance="60" data-duration="1000"></div>
 <div data-rb="FadeIn" data-target="[id='d498becc'], [id='35479fbb'], [id='41d9af34']" data-stagger="150"></div>
-<div data-rb="TiltCard" data-target="[data-widget-type='internal_recent_posts'] .inner, [id='d498becc'], [id='35479fbb'], [id='41d9af34']" data-max-tilt="6" data-scale="1.02"></div>
+<div data-rb="TiltCard" data-target="[data-widget-type='internal_recent_posts'] .inner.clearfix, [id='d498becc'], [id='35479fbb'], [id='41d9af34']" data-max-tilt="6" data-scale="1.02"></div>
 
 <script>
   // 小標加上金色引線樣式
