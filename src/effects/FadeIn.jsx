@@ -39,18 +39,41 @@ export default function FadeIn({
 
   useEffect(() => {
     const host = ref.current;
-    let items;
-    if (target) {
-      items = Array.from(document.querySelectorAll(target)).filter((n) => !n.contains(host));
-    } else if (stagger && host) {
-      // 只有一層包裝（例如 <div class="cards">）時往內找，讓每個卡片各自依序出現
-      let group = host;
-      while (group.children.length === 1) group = group.children[0];
-      items = Array.from(group.children);
-    } else {
-      items = host ? [host] : [];
-    }
-    if (!items.length) return;
+    let stopped = false;
+    let teardown = () => {};
+
+    const collect = () => {
+      if (target) {
+        try {
+          return Array.from(document.querySelectorAll(target)).filter((n) => !n.contains(host));
+        } catch (e) {
+          console.warn('[DudaEffects] FadeIn：選擇器無效', target);
+          return null;
+        }
+      }
+      if (stagger && host) {
+        // 只有一層包裝（例如 <div class="cards">）時往內找，讓每個卡片各自依序出現
+        let group = host;
+        while (group.children.length === 1) group = group.children[0];
+        return Array.from(group.children);
+      }
+      return host ? [host] : [];
+    };
+
+    // 目標元素可能稍後才渲染（例如 DUDA 部落格元件）：最多重試約 5 秒
+    let tries = 0;
+    const attempt = () => {
+      if (stopped) return;
+      const items = collect();
+      if (items === null) return;
+      if (!items.length) {
+        if (target && tries++ < 20) setTimeout(attempt, 250);
+        return;
+      }
+      teardown = run(items);
+    };
+
+    const run = (items) => {
 
     const off = {
       up: `translate3d(0, ${distance}px, 0)`,
@@ -61,7 +84,7 @@ export default function FadeIn({
     }[direction] || 'translate3d(0,0,0)';
     const hidden = `${off} scale(${scale})`;
 
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion()) return () => {};
 
     // 左右滑入時，起始位置會超出畫面造成橫向捲軸：裁掉容器的橫向溢出
     if (direction === 'left' || direction === 'right') {
@@ -89,7 +112,26 @@ export default function FadeIn({
       n.style.transform = hidden;
       if (blur) n.style.filter = `blur(${blur}px)`;
     };
-    return onVisible(items, { threshold, once }, (n) => show(n || items[0]), (n) => hide(n));
+    const shown = new Set();
+    const reveal = (n) => { shown.add(n); show(n); };
+    const stopIO = onVisible(items, { threshold, once }, (n) => reveal(n || items[0]), (n) => { shown.delete(n); hide(n); });
+
+    // 保險：偵測器漏掉事件時（例如 iframe 切換），已在畫面上的項目仍要顯示，避免內容一直看不見
+    const safety = setInterval(() => {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      items.forEach((n) => {
+        if (shown.has(n)) return;
+        const r = n.getBoundingClientRect();
+        if (r.top < vh * 0.95 && r.bottom > 0) reveal(n);
+      });
+      if (once && shown.size === items.length) clearInterval(safety);
+    }, 600);
+
+    return () => { stopIO(); clearInterval(safety); };
+    };
+
+    attempt();
+    return () => { stopped = true; teardown(); };
   }, [target, direction, distance, duration, delay, stagger, scale, blur, threshold, once]);
 
   if (target) return <span ref={ref} style={{ display: 'none' }} />;

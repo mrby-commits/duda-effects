@@ -86,9 +86,24 @@ export default function TiltCard({
     const canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     if (!canHover || prefersReducedMotion()) return;
     const opts = { maxTilt, scale, perspective, glare, speed };
-    const els = target ? Array.from(document.querySelectorAll(target)) : ref.current ? [ref.current] : [];
-    const cleanups = els.map((el) => applyTilt(el, opts));
-    return () => cleanups.forEach((fn) => fn());
+    let cleanups = [];
+    let stopped = false;
+    let tries = 0;
+    const attempt = () => {
+      if (stopped) return;
+      let els;
+      try {
+        els = target ? Array.from(document.querySelectorAll(target)) : ref.current ? [ref.current] : [];
+      } catch (e) {
+        console.warn('[DudaEffects] TiltCard：選擇器無效', target);
+        return;
+      }
+      // 目標元素可能稍後才渲染：最多重試約 5 秒
+      if (!els.length && target && tries++ < 20) return void setTimeout(attempt, 250);
+      cleanups = els.map((el) => applyTilt(el, opts));
+    };
+    attempt();
+    return () => { stopped = true; cleanups.forEach((fn) => fn()); };
   }, [target, maxTilt, scale, perspective, glare, speed]);
 
   if (target) return <span style={{ display: 'none' }} />;

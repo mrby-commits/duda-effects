@@ -1,0 +1,67 @@
+<!-- 平安宮首頁新版：放在首頁「橫幅區段」的 HTML 元件（取代原本的橫幅圖片） -->
+<script src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.4.0/dist/effects.js" defer></script>
+
+<style>
+  /* ── 色票 ── */
+  :root { --pa-red:#9c2b22; --pa-red-dark:#6e1d17; --pa-gold:#c9a24a; --pa-ink:#2a1d14; --pa-paper:#f6f1e7; }
+
+  /* 橫幅下緣的跑馬燈帶 */
+  .pa-band { background: linear-gradient(90deg, var(--pa-red-dark), var(--pa-red) 50%, var(--pa-red-dark)); color:#f3e2b8; padding:12px 0; border-top:2px solid var(--pa-gold); border-bottom:2px solid var(--pa-gold); font-family:"Noto Serif TC",serif; letter-spacing:.18em; }
+
+  /* 小標（NEWS / ABOUT / DIARY / TAGLINE）加上金色引線 */
+  .pa-label { letter-spacing:.35em !important; color:var(--pa-red) !important; font-weight:600 !important; }
+  .pa-label::before { content:""; display:inline-block; width:32px; height:2px; background:var(--pa-gold); vertical-align:middle; margin-right:12px; }
+
+  /* 快速連結列：滑過上浮＋金色底線 */
+  [id="0b46446c"] [id="017c94b0"], [id="0b46446c"] [id="12ad5ea0"], [id="0b46446c"] [id="10d8c242"], [id="0b46446c"] [id="aa72dbee"] { transition: transform .35s ease; position:relative; }
+  [id="0b46446c"] [id="017c94b0"]:hover, [id="0b46446c"] [id="12ad5ea0"]:hover, [id="0b46446c"] [id="10d8c242"]:hover, [id="0b46446c"] [id="aa72dbee"]:hover { transform: translateY(-4px); }
+  [id="0b46446c"] [id="017c94b0"]::after, [id="0b46446c"] [id="12ad5ea0"]::after, [id="0b46446c"] [id="10d8c242"]::after, [id="0b46446c"] [id="aa72dbee"]::after { content:""; position:absolute; left:20%; right:20%; bottom:-6px; height:2px; background:var(--pa-gold); transform:scaleX(0); transition:transform .35s ease; }
+  [id="0b46446c"] [id="017c94b0"]:hover::after, [id="0b46446c"] [id="12ad5ea0"]:hover::after, [id="0b46446c"] [id="10d8c242"]:hover::after, [id="0b46446c"] [id="aa72dbee"]:hover::after { transform:scaleX(1); }
+
+  /* 最新消息／公共日誌卡片：圓角、陰影、圖片滑過放大 */
+  [data-widget-type="internal_recent_posts"] .inner { border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(60,30,10,.10); transition:box-shadow .35s ease; background:#fff; }
+  [data-widget-type="internal_recent_posts"] .inner:hover { box-shadow:0 16px 36px rgba(60,30,10,.18); }
+  [data-widget-type="internal_recent_posts"] .inner img { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+  [data-widget-type="internal_recent_posts"] .inner:hover img { transform: scale(1.06); }
+
+  /* 地方與社區關懷三張卡片：圖片滑過放大 */
+  [id="d498becc"] img, [id="35479fbb"] img, [id="41d9af34"] img { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+  [id="d498becc"]:hover img, [id="35479fbb"]:hover img, [id="41d9af34"]:hover img { transform: scale(1.06); }
+
+  /* 「了解更多」按鈕：滑過掃光 */
+  #dm a.dmButtonLink, #dm a[class*="Button"] { position:relative; overflow:hidden; }
+  #dm a.dmButtonLink::after { content:""; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform:skewX(-20deg); transition:left .6s ease; }
+  #dm a.dmButtonLink:hover::after { left:120%; }
+</style>
+
+<!-- 3D 橫幅：標題固定、廟宇有景深 -->
+<div data-rb="Depth3D"
+     data-image="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.4.0/assets/pinan/hero.jpg"
+     data-depth="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.4.0/assets/pinan/hero-depth.jpg"
+     data-alt="臺南平安宮：承百年香火，記一世平安"
+     data-height="clamp(240px, 56vw, 640px)" data-focus="0.8" data-strength="0.03" data-zoom="1.06"></div>
+
+<!-- 跑馬燈帶（文字取自網站現有內容） -->
+<div class="pa-band">
+  <div data-rb="Marquee" data-items="承百年香火・記一世平安|主祀温府千歲|祭典活動|藝文交流|文化教育|開放時間 06:00 – 19:30" data-separator="✦" data-font-size="17px" data-speed="45"></div>
+</div>
+
+<!-- 頁面其他區塊的效果（套用在 DUDA 原生元件上，內容照常可編輯） -->
+<div data-rb="FadeIn" data-target="[id='0b46446c'] [id='017c94b0'], [id='0b46446c'] [id='12ad5ea0'], [id='0b46446c'] [id='10d8c242'], [id='0b46446c'] [id='aa72dbee']" data-stagger="120" data-distance="24"></div>
+<div data-rb="FadeIn" data-target="[id='831f067f'] [data-widget-type='internal_recent_posts'] .inner" data-stagger="140"></div>
+<div data-rb="FadeIn" data-target="[id='6acb365b'] [data-widget-type='internal_recent_posts'] .inner" data-stagger="140"></div>
+<div data-rb="FadeIn" data-target="#b69e3ce5 img" data-direction="right" data-distance="60" data-duration="1000"></div>
+<div data-rb="FadeIn" data-target="[id='d498becc'], [id='35479fbb'], [id='41d9af34']" data-stagger="150"></div>
+<div data-rb="TiltCard" data-target="[data-widget-type='internal_recent_posts'] .inner, [id='d498becc'], [id='35479fbb'], [id='41d9af34']" data-max-tilt="6" data-scale="1.02"></div>
+
+<script>
+  // 小標加上金色引線樣式
+  (function () {
+    function mark() {
+      document.querySelectorAll('#dm span, #dm p').forEach(function (el) {
+        if (el.childElementCount === 0 && /^(NEWS|ABOUT|DIARY|TAGLINE)$/.test(el.textContent.trim())) el.classList.add('pa-label');
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mark); else mark();
+  })();
+</script>
