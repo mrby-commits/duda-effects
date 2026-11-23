@@ -14,6 +14,9 @@
   section.flex-element:has(.qf) > .flex-element.grid { display:block !important; padding:0 !important; margin:0 !important; width:100% !important; max-width:none !important; min-height:0 !important; }
   section.flex-element:has(.qf) .flex-element.group { width:100% !important; max-width:none !important; padding:0 !important; margin:0 !important; min-height:0 !important; }
   section.flex-element:has(.qf) .flex-element.group.empty { display:none !important; }
+  /* 正式網站上空欄位沒有 .empty class：隱藏所有不含本頁內容的欄位，並讓內容欄撐滿 */
+  section.flex-element:has(.qf) .flex-element.group:not(:has(.qf)) { display:none !important; }
+  section.flex-element:has(.qf) .flex-element.group:has(.qf) { flex:1 1 100% !important; }
   section.flex-element:has(.qf) .flex-element.widget-wrapper, section.flex-element:has(.qf) [data-element-type="custom_extension"], section.flex-element:has(.qf) .dmCustomHtml, section.flex-element:has(.qf) [id*="widget_"] { width:100% !important; max-width:none !important; margin:0 !important; padding:0 !important; }
   /* 本頁下方多出來的空白區段 */
   [id="63d24979f4a54e38542a8aba"] { display:none !important; }
