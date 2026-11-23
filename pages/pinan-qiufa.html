@@ -24,7 +24,7 @@
   /* 效果庫掛載時會多包一層 div：在格線容器裡讓它「透明」 */
   .qf-acts > div, .qf-sites > div, .qf-mtns > div { display:contents; }
   .qf-tl__media > div { height:100%; }
-  .qf-wrap { max-width:1120px; margin:0 auto; padding:0 24px; }
+  .qf-wrap { width:100%; max-width:1680px; margin:0 auto; padding:0 clamp(20px, 5vw, 96px); }
   .qf-sec { padding:clamp(64px, 9vw, 120px) 0; }
   .qf-sec--dark { background:radial-gradient(ellipse at top, #2e110d, #120806 70%); color:var(--on-dark); }
   .qf-sec--dark .qf-h2 { color:#fff; }
@@ -189,6 +189,31 @@
   .qf-cta { display:inline-block; margin-top:30px; padding:14px 38px; border-radius:999px; background:var(--gold); color:var(--ink) !important; font-weight:900; letter-spacing:.3em; text-decoration:none !important; transition:transform .3s ease, box-shadow .3s ease; }
   .qf-cta:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(201,162,74,.35); }
 
+  /* ── 寬螢幕：放大內容、增加欄數 ── */
+  @media (min-width: 1280px) {
+    .qf { font-size:17px; }
+    .qf-lead { font-size:19px; }
+    .qf-origin { grid-template-columns:360px 1fr; }
+    .qf-scroll__line { font-size:38px; }
+    .qf-act p, .qf-tl__card p, .qf-site__body p, .qf-faith__list p { font-size:16.5px; }
+    .qf-act__title { font-size:26px; }
+    .qf-tl__title { font-size:23px !important; }
+    .qf-tl__item { gap:96px; margin-bottom:72px; }
+    .qf-sites { gap:28px; }
+    .qf-site__name { font-size:23px; }
+    .qf-mtns { gap:24px; }
+    .qf-mtn { padding:38px 26px 32px; }
+    .qf-mtn p { font-size:15.5px; }
+    .qf-video { grid-template-columns:1.8fr 1fr; gap:56px; }
+    .qf-gallery { columns:4 280px; column-gap:18px; }
+    .qf-map { height:620px; }
+    .qf-quote__text { font-size:28px; }
+  }
+  @media (min-width: 1680px) {
+    .qf-gallery { columns:5 280px; }
+    .qf-sites { grid-template-columns:repeat(3, 1fr); gap:32px; }
+    .qf-map { height:680px; }
+  }
   /* ── 手機 ── */
   @media (max-width: 900px) {
     .qf-stats { grid-template-columns:repeat(2, 1fr); }
