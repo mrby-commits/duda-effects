@@ -1,0 +1,3 @@
+#!/bin/sh
+# 產生本機測試頁：把 CDN 網址換成本機路徑（node .claude/static-server.mjs duda-effects 5174）
+cd "$(dirname "$0")/.." && { printf '<!doctype html>\n<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>雙笙妹妹 首頁新版 測試</title><style>body{margin:0} .fake-head{height:72px;background:#fff;border-bottom:1px solid #eee;display:flex;align-items:center;padding:0 24px;font:700 18px sans-serif;color:#4f6b2a}</style></head><body><div class="fake-head">（DUDA 原生頁首）雙笙妹妹</div><div id="dm">\n'; sed 's#https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v[0-9.]*/#/#g' pages/yktown-home.html; printf '\n</div></body></html>\n'; } > yktown-test.html

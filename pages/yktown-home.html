@@ -1,0 +1,496 @@
+<!-- 雙笙妹妹 玉米鬚茶｜首頁新版：整頁放在一個 DUDA HTML 元件裡（頁首、頁尾沿用 DUDA 原生） -->
+<script src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.5.0/dist/effects.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap">
+
+<style>
+  .yk { --green:#4f6b2a; --green-dk:#2f4318; --green-lt:#e6ecd3; --corn:#e3b43e; --corn-dk:#a87812; --corn-lt:#f8e7b5; --cream:#faf6ec; --cream-2:#f1e9d6; --ink:#2b2a20; --muted:#6a6352; --line:#e3d9c2;
+    --serif:"Noto Sans TC","Source Han Sans TC","思源黑體","PingFang TC","Microsoft JhengHei",sans-serif; --sans:"Noto Sans TC","Source Han Sans TC","思源黑體","PingFang TC","Microsoft JhengHei",sans-serif; --en:"Cormorant Garamond",Georgia,serif;
+    font-family:var(--sans); color:var(--ink); background:var(--cream); line-height:1.85; letter-spacing:.03em; width:100%; overflow-x:clip; }
+  /* 讓 DUDA 的區段／欄位撐滿全寬（只影響放這個元件的區段）。注意：DUDA 發佈時會轉義大於符號，CSS 不可用子代選擇器 */
+  section.flex-element:has(.yk) { padding:0 !important; min-height:0 !important; }
+  section.flex-element:has(.yk) .flex-element.grid:has(.yk) { display:block !important; padding:0 !important; margin:0 !important; width:100% !important; max-width:none !important; min-height:0 !important; }
+  section.flex-element:has(.yk) .flex-element.group { width:100% !important; max-width:none !important; padding:0 !important; margin:0 !important; min-height:0 !important; }
+  section.flex-element:has(.yk) .flex-element.group:not(:has(.yk)) { display:none !important; }
+  section.flex-element:has(.yk) .flex-element.group:has(.yk) { flex:1 1 100% !important; }
+  section.flex-element:has(.yk) .flex-element.widget-wrapper, section.flex-element:has(.yk) [data-element-type="custom_extension"], section.flex-element:has(.yk) .dmCustomHtml, section.flex-element:has(.yk) [id*="widget_"] { width:100% !important; max-width:none !important; margin:0 !important; padding:0 !important; }
+
+  .yk *, .yk *::before, .yk *::after { box-sizing:border-box; }
+  .yk img { max-width:100%; display:block; }
+  .yk h1, .yk h2, .yk h3, .yk p, .yk ul { margin:0; padding:0; }
+  .yk h1, .yk h2, .yk h3 { font-family:var(--serif) !important; color:inherit !important; text-transform:none !important; letter-spacing:.08em !important; }
+  .yk a { color:inherit; text-decoration:none; }
+  .yk-wrap { width:100%; max-width:1280px; margin:0 auto; padding:0 clamp(20px, 5vw, 64px); }
+  .yk-sec { padding:clamp(72px, 10vw, 140px) 0; position:relative; }
+
+  /* 區塊標題：英文花體＋中文大標（左側小玉米圖示） */
+  .yk-head { display:flex; flex-direction:column; gap:6px; margin-bottom:clamp(36px, 5vw, 64px); }
+  .yk-head--center { align-items:center; text-align:center; }
+  .yk-en { font-family:var(--en); font-style:italic; font-weight:500; font-size:clamp(22px, 2.4vw, 30px); color:var(--corn-dk); line-height:1; display:flex; align-items:center; gap:10px; }
+  .yk-en svg { width:22px; height:22px; }
+  .yk-h2 { font-size:clamp(28px, 4vw, 48px) !important; font-weight:900 !important; line-height:1.35 !important; }
+  .yk-lead { color:var(--muted); font-size:clamp(15px, 1.4vw, 17px); max-width:40em; margin-top:10px !important; }
+
+  /* 按鈕 */
+  .yk-btn { display:inline-flex; align-items:center; gap:10px; padding:14px 28px; border-radius:999px; font-weight:700; font-size:16px; letter-spacing:.12em; transition:transform .3s ease, box-shadow .3s ease, background .3s ease; position:relative; overflow:hidden; white-space:nowrap; }
+  .yk-btn svg { width:18px; height:18px; transition:transform .3s ease; }
+  .yk-btn:hover { transform:translateY(-2px); }
+  .yk-btn:hover svg { transform:translateX(4px); }
+  .yk-btn--primary { background:var(--green); color:#fff !important; box-shadow:0 10px 24px rgba(79,107,42,.28); }
+  .yk-btn--primary:hover { background:var(--green-dk); box-shadow:0 14px 30px rgba(47,67,24,.35); }
+  .yk-btn--line { background:#06c755; color:#fff !important; box-shadow:0 10px 24px rgba(6,199,85,.25); }
+  .yk-btn--ghost { background:#fff; color:var(--green-dk) !important; border:1.5px solid var(--green); }
+  .yk-btn--ghost:hover { background:var(--green-lt); }
+  .yk-btn::after { content:""; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform:skewX(-20deg); transition:left .7s ease; }
+  .yk-btn:hover::after { left:130%; }
+
+  /* ── 1. 主視覺 ── */
+  .yk-hero { position:relative; min-height:clamp(560px, 88vh, 860px); display:flex; align-items:center; overflow:hidden; background:var(--cream); }
+  .yk-hero__bg { position:absolute; inset:0; background:url(https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.5.0/assets/yktown/hero.jpg) 72% center/cover no-repeat; animation:ykZoom 20s ease-in-out infinite alternate; }
+  @keyframes ykZoom { from { transform:scale(1.02); } to { transform:scale(1.09) translateX(-1%); } }
+  .yk-hero::before { content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg, rgba(250,246,236,.97) 0%, rgba(250,246,236,.9) 32%, rgba(250,246,236,.35) 55%, rgba(250,246,236,0) 70%); }
+  .yk-hero .yk-wrap { position:relative; z-index:2; }
+  .yk-hero__copy { max-width:660px; padding:clamp(48px, 7vw, 96px) 0; }
+  .yk-pill { display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--line); border-radius:999px; padding:6px 16px 6px 8px; font-size:14px; color:var(--green-dk); font-weight:500; margin-bottom:22px; box-shadow:0 4px 14px rgba(80,60,20,.06); }
+  .yk-pill b { background:var(--corn); color:#fff; border-radius:999px; padding:2px 10px; font-size:12px; letter-spacing:.1em; }
+  .yk-hero__title { font-family:var(--serif); font-weight:900; font-size:clamp(32px, 5vw, 72px); line-height:1.3; letter-spacing:.06em; color:var(--green-dk); white-space:nowrap; }
+  .yk-hero__title em { font-style:normal; color:var(--corn-dk); }
+  .yk-hero__sub { margin-top:22px; font-size:clamp(16px, 1.6vw, 19px); color:var(--muted); letter-spacing:.14em; }
+  .yk-hero__cta { display:flex; flex-wrap:wrap; gap:14px; margin-top:34px; }
+  .yk-badges { display:flex; gap:14px; margin-top:42px; flex-wrap:wrap; }
+  .yk-badge { width:112px; height:112px; border-radius:50%; background:radial-gradient(circle at 30% 25%, #fff6d8, var(--corn) 75%); color:var(--green-dk); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; box-shadow:0 10px 24px rgba(168,120,18,.25), inset 0 0 0 3px rgba(255,255,255,.55); line-height:1.25; animation:ykFloat 5s ease-in-out infinite; }
+  .yk-badge:nth-child(2) { animation-delay:-1.6s; }
+  .yk-badge:nth-child(3) { animation-delay:-3.2s; }
+  .yk-badge small { font-size:11px; font-weight:500; letter-spacing:.08em; }
+  .yk-badge strong { font-family:var(--serif); font-size:26px; font-weight:900; letter-spacing:0; }
+  .yk-badge strong span { font-size:13px; }
+  @keyframes ykFloat { 50% { transform:translateY(-8px); } }
+  .yk-stamp { position:absolute; z-index:3; right:clamp(16px, 5vw, 96px); top:clamp(24px, 9vh, 96px); }
+  .yk-stamp .rb-ct { background:rgba(255,255,255,.88); backdrop-filter:blur(4px); box-shadow:0 12px 30px rgba(60,50,20,.15); }
+  .yk-stamp__icon { width:58px; height:58px; border-radius:50%; background:var(--green); display:grid; place-items:center; color:#fff; }
+  .yk-stamp__icon svg { width:30px; height:30px; }
+  .yk-scroll { position:absolute; z-index:3; left:50%; bottom:20px; transform:translateX(-50%); font-family:var(--en); font-style:italic; color:var(--green-dk); font-size:15px; display:flex; flex-direction:column; align-items:center; gap:6px; opacity:.8; }
+  .yk-scroll i { width:1px; height:40px; background:linear-gradient(var(--green), transparent); animation:ykDrop 1.8s ease-in-out infinite; transform-origin:top; }
+  @keyframes ykDrop { 0% { transform:scaleY(0); } 50% { transform:scaleY(1); } 100% { transform:scaleY(1); opacity:0; } }
+
+  /* ── 2. 跑馬燈帶 ── */
+  .yk-ticker { background:var(--green); color:#f4efd9; padding:16px 0; font-family:var(--serif); letter-spacing:.2em; }
+
+  /* ── 3. 選擇理由 ── */
+  .yk-reasons { display:flex; flex-direction:column; gap:clamp(64px, 9vw, 120px); }
+  .yk-reason { display:grid; grid-template-columns:1.05fr 1fr; gap:clamp(32px, 6vw, 88px); align-items:center; }
+  .yk-reason:nth-child(even) .yk-reason__media { order:2; }
+  .yk-reason__media { position:relative; border-radius:28px; overflow:hidden; aspect-ratio:5/4; background:var(--cream-2); box-shadow:0 24px 50px rgba(70,55,20,.12); }
+  .yk-reason__media img { width:100%; height:100%; object-fit:cover; transition:transform 1.2s cubic-bezier(.2,.8,.2,1); }
+  .yk-reason:hover .yk-reason__media img { transform:scale(1.05); }
+  .yk-reason__media--box { background:radial-gradient(circle at 50% 45%, #fff, var(--green-lt) 70%); display:grid; place-items:center; }
+  .yk-reason__media--box img { width:72%; height:auto; object-fit:contain; filter:drop-shadow(0 20px 30px rgba(50,60,20,.25)); }
+  .yk-num { position:absolute; top:18px; left:18px; z-index:2; background:#fff; border-radius:16px; padding:10px 16px 8px; text-align:center; line-height:1; box-shadow:0 8px 20px rgba(0,0,0,.08); }
+  .yk-num small { display:block; font-family:var(--en); font-style:italic; font-size:15px; color:var(--corn-dk); }
+  .yk-num b { font-family:var(--en); font-size:46px; font-weight:600; color:var(--green); }
+  .yk-tag { display:inline-block; background:var(--green-lt); color:var(--green-dk); border-radius:999px; padding:4px 16px; font-size:14px; font-weight:700; letter-spacing:.12em; margin-bottom:16px; }
+  .yk-reason h3 { font-size:clamp(26px, 3.2vw, 40px) !important; font-weight:900 !important; line-height:1.4 !important; color:var(--green-dk) !important; margin-bottom:20px !important; }
+  .yk-reason p { color:var(--muted); font-size:16px; }
+  .yk-checks { list-style:none; margin-top:22px !important; display:grid; gap:10px; }
+  .yk-checks li { display:flex; gap:10px; align-items:flex-start; font-weight:500; }
+  .yk-checks li::before { content:""; flex:0 0 22px; height:22px; margin-top:3px; border-radius:50%; background:var(--corn) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/14px no-repeat; }
+
+  /* ── 4. 商品 ── */
+  .yk-products { background:var(--cream-2); border-radius:clamp(28px, 4vw, 56px) clamp(28px, 4vw, 56px) 0 0; }
+  .yk-products__top { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap; margin-bottom:clamp(32px, 4vw, 52px); }
+  .yk-products__top .yk-head { margin-bottom:0; }
+  .yk-grid4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:clamp(16px, 2vw, 28px); }
+  .yk-card { background:#fff; border-radius:24px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 10px 30px rgba(70,55,20,.08); transition:box-shadow .4s ease; }
+  .yk-card:hover { box-shadow:0 22px 44px rgba(70,55,20,.16); }
+  .yk-card__img { position:relative; aspect-ratio:1/1; overflow:hidden; background:var(--cream); }
+  .yk-card__img img { width:100%; height:100%; object-fit:cover; transition:transform .9s cubic-bezier(.2,.8,.2,1); }
+  .yk-card:hover .yk-card__img img { transform:scale(1.07); }
+  .yk-card__flag { position:absolute; top:14px; left:14px; z-index:2; background:var(--corn); color:#fff; font-size:12px; font-weight:700; letter-spacing:.1em; padding:4px 12px; border-radius:999px; }
+  .yk-card__flag--green { background:var(--green); }
+  .yk-card__body { padding:20px 20px 22px; display:flex; flex-direction:column; gap:8px; flex:1; position:relative; z-index:2; }
+  .yk-card__name { font-family:var(--serif); font-weight:700; font-size:18px; line-height:1.5; color:var(--ink); }
+  .yk-card__desc { font-size:14px; color:var(--muted); line-height:1.7; }
+  .yk-card__foot { margin-top:auto; padding-top:10px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .yk-price { display:flex; flex-direction:column; line-height:1.2; }
+  .yk-price s { font-size:13px; color:#a39a85; }
+  .yk-price b { font-family:var(--en); font-size:28px; color:#c0392b; font-weight:600; }
+  .yk-price b small { font-family:var(--sans); font-size:13px; margin-right:2px; }
+  .yk-cart { width:46px; height:46px; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center; transition:transform .3s ease, background .3s ease; flex:0 0 auto; }
+  .yk-cart svg { width:22px; height:22px; }
+  .yk-card:hover .yk-cart { background:var(--corn-dk); transform:rotate(-12deg) scale(1.08); }
+
+  /* ── 6. 品牌故事 ── */
+  .yk-story { background:var(--green-dk); color:#f3eedc; overflow:hidden; }
+  .yk-story::before { content:""; position:absolute; right:-10%; top:-30%; width:60%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle, rgba(227,180,62,.22), transparent 65%); }
+  .yk-story__grid { display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(36px, 6vw, 96px); align-items:center; position:relative; }
+  .yk-story__img { border-radius:200px 200px 28px 28px; overflow:hidden; aspect-ratio:4/5; box-shadow:0 30px 60px rgba(0,0,0,.3); }
+  .yk-story__img img { width:100%; height:100%; object-fit:cover; object-position:42% center; }
+  .yk-story .yk-en { color:var(--corn); }
+  .yk-story .yk-h2 { color:#fff !important; }
+  .yk-story__text { font-size:clamp(15px, 1.4vw, 17px); color:#dcd6bf; line-height:2.1; margin-top:24px !important; }
+  .yk-quote { margin-top:30px !important; padding-left:20px; border-left:3px solid var(--corn); font-family:var(--serif); font-size:clamp(18px, 1.8vw, 22px); color:#fff; line-height:1.8; }
+  .yk-story .yk-btn { margin-top:36px; }
+
+  /* ── 7. 品質保證 ── */
+  .yk-quality__grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(32px, 5vw, 80px); align-items:center; }
+  .yk-quality__visual { position:relative; display:grid; place-items:center; }
+  .yk-quality__visual::before { content:""; position:absolute; width:86%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle, var(--corn-lt), transparent 68%); }
+  .yk-quality__visual img { position:relative; width:min(420px, 90%); filter:drop-shadow(0 26px 36px rgba(60,50,20,.25)); animation:ykFloat 6s ease-in-out infinite; }
+  .yk-stats { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .yk-stat { background:#fff; border:1px solid var(--line); border-radius:22px; padding:26px 24px; position:relative; overflow:hidden; }
+  .yk-stat__label { font-size:13px; font-weight:700; letter-spacing:.18em; color:var(--corn-dk); }
+  .yk-stat__num { font-family:var(--en); font-weight:600; font-size:clamp(40px, 4.4vw, 58px); color:var(--green); line-height:1.1; margin:6px 0 4px; display:flex; align-items:baseline; gap:6px; }
+  .yk-stat__num small { font-family:var(--sans); font-size:16px; font-weight:700; color:var(--green-dk); }
+  .yk-stat p { font-size:14px; color:var(--muted); line-height:1.7; }
+  .yk-stars { color:var(--corn); letter-spacing:.1em; }
+
+  /* ── 8. 飲用方式 ── */
+  .yk-enjoy { background:linear-gradient(180deg, var(--cream), var(--cream-2)); }
+  .yk-scenes { display:grid; grid-template-columns:repeat(4, 1fr); gap:clamp(14px, 2vw, 24px); }
+  .yk-scene { background:#fff; border-radius:24px; padding:30px 22px 26px; text-align:center; border:1px solid var(--line); transition:transform .4s ease, border-color .4s ease; }
+  .yk-scene:hover { transform:translateY(-6px); border-color:var(--corn); }
+  .yk-scene__icon { width:76px; height:76px; margin:0 auto 16px; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center; transition:background .4s ease; }
+  .yk-scene:hover .yk-scene__icon { background:var(--corn-dk); }
+  .yk-scene__icon svg { width:36px; height:36px; }
+  .yk-scene h3 { font-size:20px !important; font-weight:700 !important; color:var(--green-dk) !important; margin-bottom:6px !important; }
+  .yk-scene p { font-size:14px; color:var(--muted); line-height:1.7; }
+  .yk-steps { margin-top:clamp(40px, 6vw, 72px); display:grid; grid-template-columns:1fr 1.3fr; gap:clamp(24px, 4vw, 56px); align-items:center; background:#fff; border-radius:32px; padding:clamp(20px, 3vw, 36px); box-shadow:0 18px 40px rgba(70,55,20,.08); }
+  .yk-steps__img { border-radius:22px; overflow:hidden; aspect-ratio:4/3; }
+  .yk-steps__img img { width:100%; height:100%; object-fit:cover; object-position:30% 40%; }
+  .yk-steps ol { list-style:none; padding:0; margin:20px 0 0; display:grid; gap:14px; counter-reset:s; }
+  .yk-steps li { counter-increment:s; display:flex; gap:16px; align-items:center; background:var(--cream); border-radius:18px; padding:14px 18px; }
+  .yk-steps li::before { content:counter(s, decimal-leading-zero); font-family:var(--en); font-size:30px; font-weight:600; color:var(--corn-dk); min-width:40px; }
+  .yk-steps li b { display:block; color:var(--green-dk); font-size:17px; }
+  .yk-steps li span { font-size:14px; color:var(--muted); }
+
+  /* ── 9. 常見問題 ── */
+  .yk-faq__grid { display:grid; grid-template-columns:.8fr 1.2fr; gap:clamp(32px, 5vw, 80px); align-items:start; }
+  .yk-faq__list { display:grid; gap:12px; }
+  .yk-faq details { background:#fff; border:1px solid var(--line); border-radius:18px; overflow:hidden; transition:border-color .3s ease, box-shadow .3s ease; }
+  .yk-faq details[open] { border-color:var(--green); box-shadow:0 12px 28px rgba(79,107,42,.1); }
+  .yk-faq summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:14px; padding:20px 22px; font-weight:700; font-size:16px; }
+  .yk-faq summary::-webkit-details-marker { display:none; }
+  .yk-faq summary::before { content:"Q"; font-family:var(--en); font-style:italic; font-size:26px; color:var(--corn-dk); line-height:1; }
+  .yk-faq summary::after { content:""; margin-left:auto; flex:0 0 28px; height:28px; border-radius:50%; background:var(--green-lt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f6b2a' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M12 6v12M6 12h12'/%3E%3C/svg%3E") center/14px no-repeat; transition:transform .3s ease; }
+  .yk-faq details[open] summary::after { transform:rotate(45deg); }
+  .yk-faq__a { padding:0 22px 22px 62px; color:var(--muted); font-size:15px; }
+
+  /* ── 10. 行動呼籲 ── */
+  .yk-cta { padding:0 0 clamp(72px, 9vw, 120px); }
+  .yk-cta__box { position:relative; border-radius:clamp(28px, 4vw, 48px); overflow:hidden; background:var(--green); color:#fff; padding:clamp(40px, 6vw, 80px) clamp(24px, 5vw, 72px); display:grid; grid-template-columns:1.3fr 1fr; gap:32px; align-items:center; }
+  .yk-cta__box::after { content:""; position:absolute; right:0; top:0; bottom:0; width:45%; background:url(https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.5.0/assets/yktown/corn.jpg) center/cover; -webkit-mask-image:linear-gradient(90deg, transparent, #000 45%); mask-image:linear-gradient(90deg, transparent, #000 45%); opacity:.9; }
+  .yk-cta__box .yk-en { color:var(--corn-lt); }
+  .yk-cta__title { font-family:var(--serif); font-weight:900; font-size:clamp(28px, 3.8vw, 46px); line-height:1.4; letter-spacing:.08em; margin-top:8px; }
+  .yk-cta__sub { color:#e5ecd2; margin-top:12px; letter-spacing:.14em; }
+  .yk-cta__actions { position:relative; z-index:2; display:flex; flex-direction:column; gap:14px; align-items:flex-start; }
+  .yk-cta__actions .yk-btn--ghost { border-color:#fff; }
+  .yk-tel { display:flex; align-items:center; gap:8px; color:#fff; font-size:15px; letter-spacing:.1em; padding:8px 18px; background:rgba(0,0,0,.18); border-radius:999px; backdrop-filter:blur(6px); }
+  .yk-tel svg { width:18px; height:18px; }
+
+  /* 右側固定的直式 LINE 客服標籤（桌機） */
+  .yk-side { position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:50; writing-mode:vertical-rl; background:#06c755; color:#fff !important; padding:20px 12px; border-radius:16px 0 0 16px; font-weight:700; letter-spacing:.3em; font-size:15px; box-shadow:-6px 8px 24px rgba(0,0,0,.15); display:flex; align-items:center; gap:10px; transition:padding .3s ease; }
+  .yk-side:hover { padding-right:18px; }
+  .yk-side svg { width:22px; height:22px; }
+
+  /* ── 響應式 ── */
+  @media (max-width: 1024px) {
+    .yk-grid4, .yk-scenes { grid-template-columns:repeat(2, 1fr); }
+    .yk-side { display:none; }
+  }
+  @media (max-width: 860px) {
+    .yk-hero { flex-direction:column; align-items:stretch; min-height:0; }
+    .yk-hero__bg { position:relative; inset:auto; height:68vw; max-height:460px; background-position:78% center; animation:none; }
+    .yk-hero::before { display:none; }
+    .yk-hero__copy { padding:36px 0 56px; max-width:none; }
+    .yk-stamp { top:calc(min(68vw, 460px) - 70px); bottom:auto; right:16px; }
+    .yk-stamp .rb-ct { transform:scale(.72); transform-origin:right bottom; }
+    .yk-scroll { display:none; }
+    .yk-reason, .yk-story__grid, .yk-quality__grid, .yk-faq__grid, .yk-steps, .yk-cta__box { grid-template-columns:1fr; }
+    .yk-reason:nth-child(even) .yk-reason__media { order:0; }
+    .yk-story__img { max-width:420px; }
+    .yk-cta__box::after { width:100%; opacity:.18; -webkit-mask-image:none; mask-image:none; }
+  }
+  @media (max-width: 520px) {
+    .yk-grid4 { grid-template-columns:1fr 1fr; gap:12px; }
+    .yk-card__body { padding:14px; }
+    .yk-card__name { font-size:15px; }
+    .yk-card__desc { display:none; }
+    .yk-price b { font-size:22px; }
+    .yk-cart { width:38px; height:38px; }
+    .yk-badge { width:92px; height:92px; }
+    .yk-badge strong { font-size:21px; }
+    .yk-stats { grid-template-columns:1fr; }
+    .yk-scene { padding:22px 14px; }
+    .yk-scene__icon { width:60px; height:60px; }
+    .yk-faq__a { padding-left:22px; }
+    .yk-btn { padding:13px 22px; font-size:15px; }
+  }
+</style>
+
+<div class="yk">
+
+  <!-- ══ 1. 主視覺 ══ -->
+  <section class="yk-hero" id="yk-hero">
+    <div class="yk-hero__bg" role="img" aria-label="雙笙妹妹玉米鬚茶 瓶裝與盒裝，旁邊是一杯玉米鬚茶"></div>
+    <div class="yk-wrap">
+      <div class="yk-hero__copy">
+        <span class="yk-pill"><b>100%</b>純玉米鬚・無咖啡因</span>
+        <h1 class="yk-hero__title">
+          <span data-rb="BlurText" data-tag="span" data-text="一杯純粹，" data-delay="70" style="display:block"></span>
+          <span data-rb="BlurText" data-tag="span" data-text="陪你安心過每一天" data-delay="70" data-start-delay="350" style="display:block"></span>
+        </h1>
+        <p class="yk-hero__sub">慢火焙香・自然回甘・全家都能安心喝</p>
+        <div class="yk-hero__cta">
+          <a class="yk-btn yk-btn--primary" href="/store">立即選購玉米鬚茶 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="yk-btn yk-btn--ghost" href="/%E6%96%B0%E4%B8%80%E9%A0%81">品牌故事</a>
+        </div>
+        <div class="yk-badges">
+          <div class="yk-badge"><small>農藥檢驗合格</small><strong>411<span>項</span></strong></div>
+          <div class="yk-badge"><small>咖啡因</small><strong>0<span>mg</span></strong></div>
+          <div class="yk-badge"><small>ITI 風味絕佳</small><strong>★★</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="yk-stamp">
+      <div data-rb="CircularText" data-text="100% PURE CORN SILK TEA ✦ 雙笙妹妹 ✦ " data-size="150" data-duration="22" data-font-size="12" data-color="#2f4318" data-letter-spacing="1px">
+        <div class="yk-stamp__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-3-2-4.5-5.5-4.5-9S9 5 12 3c3 2 4.5 5.5 4.5 9S15 19 12 21z"/><path d="M12 7v12M9.5 9.5l2.5 1.5 2.5-1.5M9.5 13l2.5 1.5 2.5-1.5"/></svg></div>
+      </div>
+    </div>
+    <div class="yk-scroll">Scroll<i></i></div>
+  </section>
+
+  <!-- ══ 2. 跑馬燈帶 ══ -->
+  <div class="yk-ticker">
+    <div data-rb="Marquee" data-items="100% 純玉米鬚|無咖啡因・無麩質|411 項農藥檢驗合格|兩道低溫慢火烘焙|ISO 22000 食品安全管理|布魯塞爾 ITI 風味絕佳獎章" data-separator="✦" data-font-size="17px" data-speed="50" data-gap="40px"></div>
+  </div>
+
+  <!-- ══ 3. 選擇理由 ══ -->
+  <section class="yk-sec" id="yk-reason">
+    <div class="yk-wrap">
+      <div class="yk-head">
+        <span class="yk-en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 21c-3-2-4.5-5.5-4.5-9S9 5 12 3c3 2 4.5 5.5 4.5 9S15 19 12 21z"/><path d="M12 7v12"/></svg>Reason</span>
+        <h2 class="yk-h2">選擇雙笙妹妹的三個理由</h2>
+        <p class="yk-lead">一杯好喝的玉米鬚茶，從原料、檢驗到烘焙，每一步都不馬虎。</p>
+      </div>
+      <div class="yk-reasons">
+        <article class="yk-reason">
+          <div class="yk-reason__media">
+            <div class="yk-num"><small>Reason</small><b>01</b></div>
+            <img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.5.0/assets/yktown/corn.jpg" alt="新鮮玉米與金黃色的玉米鬚" loading="lazy">
+          </div>
+          <div class="yk-reason__text">
+            <span class="yk-tag">100% 純玉米鬚</span>
+            <h3>只用一種原料，<br>喝得到的純粹</h3>
+            <p>嚴選玉米鬚為唯一原料，不添加香料、糖或其他配方。打開茶包，看得見的就是全部。</p>
+            <ul class="yk-checks"><li>不添加香料與人工色素</li><li>無咖啡因、無麩質</li><li>大人小孩都能日常飲用</li></ul>
+          </div>
+        </article>
+        <article class="yk-reason">
+          <div class="yk-reason__media yk-reason__media--box">
+            <div class="yk-num"><small>Reason</small><b>02</b></div>
+            <img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.5.0/assets/yktown/box.webp" alt="雙笙妹妹玉米鬚茶 25 入盒裝與布魯塞爾 ITI 風味絕佳獎章" loading="lazy">
+          </div>
+          <div class="yk-reason__text">
+            <span class="yk-tag">嚴格檢驗</span>
+            <h3>每一批，<br>都經過嚴格把關</h3>
+            <p>通過 411 項農藥殘留檢驗，並在 ISO 22000 食品安全管理系統下生產。喝進去的每一口，我們都希望您放心。</p>
+            <ul class="yk-checks"><li>411 項農藥檢驗合格</li><li>ISO 22000 食品安全管理</li><li>布魯塞爾 ITI 風味絕佳獎章 ★★</li></ul>
+          </div>
+        </article>
+        <article class="yk-reason">
+          <div class="yk-reason__media">
+            <div class="yk-num"><small>Reason</small><b>03</b></div>
+            <img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.5.0/assets/yktown/pour.jpg" alt="金黃透亮的玉米鬚茶倒入玻璃杯" loading="lazy" style="object-position:30% center">
+          </div>
+          <div class="yk-reason__text">
+            <span class="yk-tag">慢火焙香</span>
+            <h3>兩道低溫慢火，<br>烘出自然回甘</h3>
+            <p>以低溫慢火分兩道烘焙，保留玉米鬚的溫潤香氣。熱沖香氣飽滿，冷泡清爽順口，不加糖也好喝。</p>
+            <ul class="yk-checks"><li>兩道低溫慢火烘焙</li><li>熱沖、冷泡都好喝</li><li>茶色金黃透亮</li></ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 4. 人氣商品 ══ -->
+  <section class="yk-sec yk-products" id="yk-products">
+    <div class="yk-wrap">
+      <div class="yk-products__top">
+        <div class="yk-head">
+          <span class="yk-en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 21c-3-2-4.5-5.5-4.5-9S9 5 12 3c3 2 4.5 5.5 4.5 9S15 19 12 21z"/><path d="M12 7v12"/></svg>Products</span>
+          <h2 class="yk-h2">人氣商品</h2>
+        </div>
+        <a class="yk-btn yk-btn--ghost" href="/store">看全部商品 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="yk-grid4">
+        <a class="yk-card" href="/product/foam-roller">
+          <div class="yk-card__img"><span class="yk-card__flag">免運</span><img src="https://irp.cdn-website.com/327a09b3/dms3rep/multi/opt/ChatGPT+Image+2026%E5%B9%B45%E6%9C%8825%E6%97%A5+%E4%B8%8B%E5%8D%8804_11_04-640w.jpg" alt="雙笙妹妹玉米鬚茶單盒" loading="lazy"></div>
+          <div class="yk-card__body">
+            <h3 class="yk-card__name">玉米鬚茶｜單盒 25 入</h3>
+            <p class="yk-card__desc">日常保養入門，一盒輕鬆享受純粹風味。</p>
+            <div class="yk-card__foot"><div class="yk-price"><s>NT$300</s><b><small>NT$</small>270</b></div><span class="yk-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6"/></svg></span></div>
+          </div>
+        </a>
+        <a class="yk-card" href="/product/fit-ball-75cm">
+          <div class="yk-card__img"><span class="yk-card__flag yk-card__flag--green">大容量</span><img src="https://irp.cdn-website.com/327a09b3/dms3rep/multi/opt/big01-640w.jpg" alt="雙笙妹妹玉米鬚茶 家庭／辦公室業務袋 50 茶包" loading="lazy"></div>
+          <div class="yk-card__body">
+            <h3 class="yk-card__name">家庭／辦公室業務袋 50 入</h3>
+            <p class="yk-card__desc">大容量包裝，全家、辦公室一起喝更划算。</p>
+            <div class="yk-card__foot"><div class="yk-price"><s>NT$565</s><b><small>NT$</small>445</b></div><span class="yk-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6"/></svg></span></div>
+          </div>
+        </a>
+        <a class="yk-card" href="/product/fitness-neoprene-dumbbells">
+          <div class="yk-card__img"><span class="yk-card__flag">熱銷</span><img src="https://irp.cdn-website.com/327a09b3/dms3rep/multi/opt/HB5_75241-640w.jpg" alt="雙笙妹妹 益生久久 全腸道防護益生菌" loading="lazy"></div>
+          <div class="yk-card__body">
+            <h3 class="yk-card__name">益生久久 全腸道防護益生菌</h3>
+            <p class="yk-card__desc">雙笙妹妹的日常好夥伴，30 包隨身方便。</p>
+            <div class="yk-card__foot"><div class="yk-price"><s>NT$850</s><b><small>NT$</small>750</b></div><span class="yk-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6"/></svg></span></div>
+          </div>
+        </a>
+        <a class="yk-card" href="/product/body-suit">
+          <div class="yk-card__img"><span class="yk-card__flag yk-card__flag--green">組合優惠</span><img src="https://irp.cdn-website.com/327a09b3/dms3rep/multi/opt/sweet_potato01-640w.jpg" alt="雙笙妹妹 冰烤地瓜" loading="lazy"></div>
+          <div class="yk-card__body">
+            <h3 class="yk-card__name">冰烤地瓜 300g｜10 盒組</h3>
+            <p class="yk-card__desc">綿密香甜，冰的、熱的都好吃。</p>
+            <div class="yk-card__foot"><div class="yk-price"><s>NT$1,190</s><b><small>NT$</small>990</b></div><span class="yk-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6"/></svg></span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 6. 品牌故事 ══ -->
+  <section class="yk-sec yk-story" id="yk-story">
+    <div class="yk-wrap yk-story__grid">
+      <div class="yk-story__img"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.5.0/assets/yktown/life.jpg" alt="在家伸展放鬆，身旁放著雙笙妹妹玉米鬚茶" loading="lazy"></div>
+      <div>
+        <div class="yk-head" style="margin-bottom:0">
+          <span class="yk-en">Our Story</span>
+          <h2 class="yk-h2">一位父親，<br>為女兒打造的安心茶</h2>
+        </div>
+        <p class="yk-story__text">創辦人擁有近 30 年食品產業經驗，因為對家人的關心，特別為女兒研發出這款簡單、安心、每天都能喝的玉米鬚茶。這份對家人的愛，也成為「雙笙妹妹」的品牌初衷。</p>
+        <p class="yk-quote">「給家人喝的東西，<br>就要用最單純的原料。」</p>
+        <a class="yk-btn yk-btn--primary" href="/%E6%96%B0%E4%B8%80%E9%A0%81" style="background:var(--corn);box-shadow:none;color:var(--green-dk) !important">閱讀品牌故事 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 7. 品質保證 ══ -->
+  <section class="yk-sec" id="yk-quality">
+    <div class="yk-wrap">
+      <div class="yk-head yk-head--center">
+        <span class="yk-en">Quality</span>
+        <h2 class="yk-h2">品質保證・安心有依據</h2>
+      </div>
+      <div class="yk-quality__grid">
+        <div class="yk-quality__visual"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.5.0/assets/yktown/box.webp" alt="雙笙妹妹玉米鬚茶盒裝" loading="lazy"></div>
+        <div class="yk-stats">
+          <div class="yk-stat">
+            <div class="yk-stat__label">SGS 農藥檢驗</div>
+            <div class="yk-stat__num"><span data-rb="CountUp" data-to="411" data-duration="1800"></span><small>項合格</small></div>
+            <p>農藥殘留檢驗全數合格，每一批都安心。</p>
+          </div>
+          <div class="yk-stat">
+            <div class="yk-stat__label">食品安全管理</div>
+            <div class="yk-stat__num">ISO <span data-rb="CountUp" data-to="22000" data-separator="none" data-duration="1800"></span></div>
+            <p>於國際食品安全管理系統下生產製造。</p>
+          </div>
+          <div class="yk-stat">
+            <div class="yk-stat__label">國際風味評鑑</div>
+            <div class="yk-stat__num"><span class="yk-stars">★★</span><small>ITI</small></div>
+            <p>榮獲布魯塞爾國際風味暨品質評鑑所「風味絕佳獎章」。</p>
+          </div>
+          <div class="yk-stat">
+            <div class="yk-stat__label">產品責任險</div>
+            <div class="yk-stat__num"><span data-rb="CountUp" data-to="2000" data-duration="1800"></span><small>萬元</small></div>
+            <p>投保產品責任險，給您多一層保障。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 8. 飲用方式 ══ -->
+  <section class="yk-sec yk-enjoy" id="yk-enjoy">
+    <div class="yk-wrap">
+      <div class="yk-head yk-head--center">
+        <span class="yk-en">How to Enjoy</span>
+        <h2 class="yk-h2">隨時隨地，輕鬆享受</h2>
+        <p class="yk-lead">熱沖、冷泡都好喝，一杯玉米鬚茶融入生活的每個片刻。</p>
+      </div>
+      <div class="yk-scenes">
+        <div class="yk-scene"><div class="yk-scene__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8M9 3v3l-2 3v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9l-2-3V3"/><path d="M12 12v6M9.5 13.5l5 3M14.5 13.5l-5 3"/></svg></div><h3>上班冷泡</h3><p>清爽順口<br>補充水分</p></div>
+        <div class="yk-scene"><div class="yk-scene__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h13v3a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 12h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 4c-1 1 1 2 0 3M12 4c-1 1 1 2 0 3"/></svg></div><h3>餐後熱沖</h3><p>溫潤焙香<br>清爽解膩</p></div>
+        <div class="yk-scene"><div class="yk-scene__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="10" cy="14" r="1.3"/><circle cx="14.5" cy="14.5" r="1"/><path d="M8 20v-2.5a2 2 0 0 1 4 0V20M13 20v-2a1.5 1.5 0 0 1 3 0v2"/></svg></div><h3>家庭日常</h3><p>無咖啡因<br>全家安心喝</p></div>
+        <div class="yk-scene"><div class="yk-scene__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="4.5" r="1.8"/><path d="M8 21l3-6 3 2v4M6 12l3-4 4 1 3 3 3 1M11 15l-1-5"/></svg></div><h3>運動補充</h3><p>零負擔<br>隨身補水</p></div>
+      </div>
+      <div class="yk-steps">
+        <div class="yk-steps__img"><img src="https://cdn.jsdelivr.net/gh/mrby-commits/duda-effects@v0.5.0/assets/yktown/pour.jpg" alt="沖泡玉米鬚茶" loading="lazy"></div>
+        <div>
+          <span class="yk-en">3 Steps</span>
+          <h3 class="yk-h2" style="font-size:clamp(22px, 2.6vw, 32px) !important">三步驟，泡出一杯好茶</h3>
+          <ol>
+            <li><div><b>放入茶包</b><span>取一包玉米鬚茶包放入杯中或水壺。</span></div></li>
+            <li><div><b>注入熱水或冷水</b><span>熱沖燜泡出焙香；冷泡放冰箱，口感更清爽。</span></div></li>
+            <li><div><b>依喜好調整濃淡</b><span>浸泡時間越長風味越濃，找到您喜歡的味道。</span></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 9. 常見問題 ══ -->
+  <section class="yk-sec yk-faq" id="yk-faq">
+    <div class="yk-wrap yk-faq__grid">
+      <div class="yk-head">
+        <span class="yk-en">Q&amp;A</span>
+        <h2 class="yk-h2">常見問題</h2>
+        <p class="yk-lead">還有其他問題嗎？歡迎透過 LINE 官方客服與我們聯繫。</p>
+        <div style="margin-top:20px"><a class="yk-btn yk-btn--line" href="https://lin.ee/zmxg2I5" target="_blank" rel="noopener">LINE 官方客服</a></div>
+      </div>
+      <div class="yk-faq__list">
+        <details open><summary>玉米鬚茶含有咖啡因嗎？</summary><div class="yk-faq__a">不含。雙笙妹妹玉米鬚茶以 100% 玉米鬚製成，無咖啡因，大人小孩都能當作日常飲品。</div></details>
+        <details><summary>可以冷泡嗎？</summary><div class="yk-faq__a">可以。熱沖焙香較濃郁，冷泡口感清爽，可以依季節與喜好選擇。</div></details>
+        <details><summary>開封後要怎麼保存？</summary><div class="yk-faq__a">請置於陰涼乾燥處，避免陽光直射與潮濕；開封後建議盡早飲用完畢，風味最佳。</div></details>
+        <details><summary>除了官網，還可以在哪裡買到？</summary><div class="yk-faq__a">除了<a href="/store" style="color:var(--green);font-weight:700">官網線上購物</a>，也可以查看<a href="/%E6%96%B0%E4%B8%80%E9%A0%81-2" style="color:var(--green);font-weight:700">全台通路</a>找到離您最近的銷售點。</div></details>
+        <details><summary>有提供企業團購或外銷合作嗎？</summary><div class="yk-faq__a">有的，歡迎參考<a href="/%E5%A4%96%E9%8A%B7%E6%A5%AD%E5%8B%99" style="color:var(--green);font-weight:700">外銷業務</a>頁面，或直接來電 06-2410291 洽詢。</div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 10. 行動呼籲 ══ -->
+  <section class="yk-cta">
+    <div class="yk-wrap">
+      <div class="yk-cta__box">
+        <div style="position:relative;z-index:2">
+          <span class="yk-en">Daily Cup</span>
+          <p class="yk-cta__title">讓一杯純粹，<br>成為生活日常</p>
+          <p class="yk-cta__sub">100% 純玉米鬚・無咖啡因・自然焙香回甘</p>
+        </div>
+        <div class="yk-cta__actions">
+          <a class="yk-btn yk-btn--ghost" href="/store">立即選購 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="yk-btn yk-btn--line" href="https://lin.ee/zmxg2I5" target="_blank" rel="noopener">加入 LINE 好友</a>
+          <a class="yk-tel" href="tel:06-2410291"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>06-2410291</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 右側固定 LINE 客服（桌機） -->
+  <a class="yk-side" href="https://lin.ee/zmxg2I5" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.8-3.4 7.9-5.9C21.3 14.3 22 12.7 22 11c0-4.4-4.5-8-10-8z"/></svg>LINE 客服諮詢</a>
+
+  <!-- 進場動效（套用在上面的元素上，不改結構） -->
+  <div data-rb="FadeIn" data-target=".yk-hero__sub, .yk-hero__cta, .yk-badges" data-stagger="160" data-delay="700" data-distance="24"></div>
+  <div data-rb="FadeIn" data-target="#yk-reason .yk-head" data-distance="30"></div>
+  <div data-rb="FadeIn" data-target=".yk-reason__media" data-scale="0.94" data-distance="50" data-duration="1000"></div>
+  <div data-rb="FadeIn" data-target=".yk-reason__text" data-direction="left" data-distance="50" data-delay="150"></div>
+  <div data-rb="FadeIn" data-target=".yk-card" data-stagger="120" data-distance="40"></div>
+  <div data-rb="FadeIn" data-target=".yk-story__img" data-direction="right" data-distance="60" data-duration="1100"></div>
+  <div data-rb="FadeIn" data-target=".yk-stat" data-stagger="120"></div>
+  <div data-rb="FadeIn" data-target=".yk-quality__visual" data-scale="0.85" data-duration="1100"></div>
+  <div data-rb="FadeIn" data-target=".yk-scene" data-stagger="110"></div>
+  <div data-rb="FadeIn" data-target=".yk-steps, .yk-faq details, .yk-cta__box" data-stagger="80" data-distance="30"></div>
+  <div data-rb="TiltCard" data-target=".yk-card" data-max-tilt="6" data-scale="1.02" data-radius="24px"></div>
+  <div data-rb="SpotlightCard" data-target=".yk-card, .yk-stat" data-color="rgba(227,180,62,.22)" data-size="260"></div>
+</div>

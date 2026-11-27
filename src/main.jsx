@@ -9,11 +9,15 @@ import Marquee from './effects/Marquee.jsx';
 import Particles from './effects/Particles.jsx';
 import TiltCard from './effects/TiltCard.jsx';
 import Depth3D from './effects/Depth3D.jsx';
+import CircularText from './effects/CircularText.jsx';
+import ScrollVelocity from './effects/ScrollVelocity.jsx';
+import BlurText from './effects/BlurText.jsx';
+import SpotlightCard from './effects/SpotlightCard.jsx';
 
-const VERSION = '0.4.0';
+const VERSION = '0.5.0';
 
 // 效果註冊表：HTML 上的 data-rb="名稱" 對應到這裡的元件
-const registry = { SplitText, Aurora, ClickSpark, FadeIn, CountUp, Marquee, Particles, TiltCard, Depth3D };
+const registry = { SplitText, Aurora, ClickSpark, FadeIn, CountUp, Marquee, Particles, TiltCard, Depth3D, CircularText, ScrollVelocity, BlurText, SpotlightCard };
 
 // data-* 的值都是字串，轉成數字／布林／JSON
 function parseValue(v) {
